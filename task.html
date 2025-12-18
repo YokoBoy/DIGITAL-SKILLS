@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigitalSkills - Task</title>
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="bootstap/bootstrap.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/style-updates.css">
+    <style>
+        body {
+            background: #1a1a2e;
+            /* Dark background for focus */
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .task-wrapper {
+            max-width: 900px;
+            margin: 50px auto;
+            background: #fff;
+            color: #333;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .task-header {
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+            padding: 20px 30px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-body {
+            padding: 30px;
+            min-height: 400px;
+        }
+
+        .task-footer {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="task-wrapper">
+            <div class="task-header">
+                <h3 id="task-title" class="m-0">Loading Task...</h3>
+                <a href="dashboard.html" class="btn btn-outline-light btn-sm"><i class="fas fa-times"></i> Exit</a>
+            </div>
+
+            <div class="task-body" id="task-container">
+                <!-- Task Stages Rendered Here -->
+                <div class="text-center p-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="task-footer">
+                <span id="task-status" class="text-muted small">Quest Mode</span>
+                <button id="btn-check-task" class="btn btn-primary btn-lg px-5">Check Answer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Task Modal Body for compatibility with existing TaskRunner logic which expects #task-modal-body -->
+    <!-- We will override TaskRunner to use #task-container, but let's keep it robust -->
+
+    <script src="bootstap/bootstrap.js"></script>
+    <script src="js/localization.js"></script>
+
+    <!-- Task Modules -->
+    <script src="js/tasks/basic-data.js"></script>
+    <script src="js/tasks/intermediate-data.js"></script>
+    <script src="js/tasks/task-runner.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check Auth
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const taskId = parseInt(urlParams.get('id'));
+            const level = urlParams.get('level') || 'basic';
+
+            if (!taskId) {
+                alert("Invalid Task ID");
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // Override DOM elements for TaskRunner
+            // The TaskRunner expects: #task-modal-body, #taskModalLabel, #btn-check-task, #taskModal
+            // We map them to our page structure
+
+            // Mocking the modal behavior or modifying TaskRunner?
+            // I will modify TaskRunner in a moment to handle 'page mode' vs 'modal mode' 
+            // OR I can just map IDs here to trick it.
+            // Let's rely on mapping for now, but I already planned to update TaskRunner.
+            // Since I am updating TaskRunner, I will make it accept container arguments.
+
+            // For now, let's wait for TaskRunner update.
+            // But I can set global variables or config.
+
+            setTimeout(() => {
+                if (typeof TaskRunner !== 'undefined') {
+                    // Initialize TaskRunner in Page Mode
+                    // We need to ensure TaskRunner is ready.
+                    TaskRunner.initPageMode({
+                        containerId: 'task-container',
+                        titleId: 'task-title',
+                        checkBtnId: 'btn-check-task'
+                    });
+                    TaskRunner.open(taskId, level);
+                }
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>

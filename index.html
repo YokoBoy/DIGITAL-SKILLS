@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DigitalSkills</title>
+  <link rel="stylesheet" href="fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="bootstap/bootstrap.css">
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="styles/style-updates.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="navigate">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg p-0">
+          <a class="logo" href="#">
+            <span class="header__bars"></span>
+            <span class="logo__text">Digital</span>Skills
+            <span class="header__shadow"></span>
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="header__btn"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="header__list">
+              <li>
+                <a class="header__link lang-btn active" href="#" data-lang="ru">RU</a>
+                <span class="header__divider">|</span>
+                <a class="header__link lang-btn" href="#" data-lang="uz">UZ</a>
+              </li>
+              <li id="login-item">
+                <a class="header__link" href="#" id="login-btn" data-bs-toggle="modal" data-bs-target="#loginModal"
+                  data-i18n="nav-login">Войти</a>
+              </li>
+              <li id="dashboard-item" style="display: none;">
+                <a class="header__link" href="dashboard.html" data-i18n="nav-dashboard">Кабинет</a>
+              </li>
+              <li id="logout-item" style="display: none;">
+                <a class="header__link" href="#" id="logout-btn" data-i18n="nav-logout">Выйти</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="circle circle1"></div>
+    <div class="cube cube1"></div>
+    <div class="cube cube2"></div>
+    <div class="cube cube3"></div>
+
+    <!-- HERO SECTION -->
+    <div class="slider-static">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-12">
+            <div class="slider__text">
+              <h3 class="slider__title" data-i18n="hero-title">Добро пожаловать в DigitalSkills!</h3>
+              <p class="slider__descr" data-i18n="hero-subtitle">
+                Освойте цифровые технологии в образовании и станьте профессионалом!
+              </p>
+              <a href="#learning" class="slider__link" data-i18n="hero-cta">Начать обучение</a>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-12">
+            <!-- Using existing image or placeholder -->
+            <img src="images/slider.png" alt="" class="slider__img">
+          </div>
+        </div>
+
+        <!-- "What you will receive" using slider__icons styles -->
+        <div class="row mt-5">
+          <div class="col-12">
+            <h3 class="section-title text-white mb-4" data-i18n="get-title">Что вы получите?</h3>
+          </div>
+          <div class="col-md-4">
+            <div class="feature-card">
+              <i class="fas fa-book-reader fa-3x mb-3 text-primary"></i>
+              <p data-i18n="get-1">Доступ к электронным ресурсам по дисциплине.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="feature-card">
+              <i class="fas fa-laptop-code fa-3x mb-3 text-primary"></i>
+              <p data-i18n="get-2">Практическое обучение с интересными заданиями и кейсами.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="feature-card">
+              <i class="fas fa-lightbulb fa-3x mb-3 text-primary"></i>
+              <p data-i18n="get-3">Возможность больше узнать о цифровых технологиях.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- "What you will learn" Section (using capabilities/accordion style) -->
+    <div class="cap" id="learning">
+      <div class="container">
+        <h2 class="cap__title" data-i18n="learn-title">Что вы изучите?</h2>
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-12">
+            <div class="accord">
+              <div class="circle circle3"></div>
+              <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <i class="fas fa-graduation-cap cap__icon me-3"></i>
+                      <span data-i18n="learn-1">Как цифровые технологии меняют образование.</span>
+                    </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                      <!-- Content placeholder if needed, or just repeat the title for detailed view -->
+                      <span data-i18n="learn-1">Как цифровые технологии меняют образование.</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      <i class="fas fa-project-diagram cap__icon me-3"></i>
+                      <span data-i18n="learn-2">Как создавать интерактивные уроки...</span>
+                    </button>
+                  </h2>
+                  <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                      <span data-i18n="learn-2">Как создавать интерактивные уроки, онлайн-курсы и мультимедийные
+                        проекты.</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                      <i class="fas fa-robot cap__icon me-3"></i>
+                      <span data-i18n="learn-3">Основы искусственного интеллекта...</span>
+                    </button>
+                  </h2>
+                  <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                      <span data-i18n="learn-3">Основы искусственного интеллекта, виртуальных лабораторий и
+                        геймификации.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-12">
+            <img src="images/capabilities.png" alt="" class="cap__img">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Protected Content Section REMOVED - Moved to dashboard.html -->
+
+  </main>
+
+  <footer class="footer">
+    <div class="circle circle5"></div>
+    <div class="container">
+      <div class="footer__content">
+        <a class="logo" href="#">
+          <span class="header__bars"></span>
+          <span class="logo__text">Digital</span>Skills
+          <span class="header__shadow"></span>
+        </a>
+        <p class="text-white mt-3" data-i18n="footer-cta">Присоединяйтесь и начните свой путь в цифровом обучении!</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Auth Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- We will just toggle visibility of titles -->
+          <h5 class="modal-title" id="auth-modal-title" data-i18n="modal-title-login">Вход в систему</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <!-- LOGIN FORM -->
+          <div id="login-form-container">
+            <form id="login-form">
+              <div class="mb-3">
+                <label for="login-email" class="form-label" data-i18n="label-email">Email</label>
+                <input type="email" class="form-control" id="login-email" required placeholder="user@example.com">
+              </div>
+              <div class="mb-3">
+                <label for="login-password" class="form-label" data-i18n="label-password">Пароль</label>
+                <input type="password" class="form-control" id="login-password" required placeholder="password">
+              </div>
+              <button type="submit" class="btn btn-primary w-100 mb-3" data-i18n="btn-submit-login">Войти</button>
+              <div class="text-center">
+                <span data-i18n="text-no-account">Нет аккаунта?</span>
+                <a href="#" id="to-register" data-i18n="btn-register">Регистрация</a>
+              </div>
+            </form>
+          </div>
+
+          <!-- REGISTER FORM -->
+          <div id="register-form-container" style="display: none;">
+            <form id="register-form">
+              <div class="mb-3">
+                <label for="register-name" class="form-label" data-i18n="label-name">Имя</label>
+                <input type="text" class="form-control" id="register-name" required placeholder="John Doe">
+              </div>
+              <div class="mb-3">
+                <label for="register-email" class="form-label" data-i18n="label-email">Email</label>
+                <input type="email" class="form-control" id="register-email" required placeholder="user@example.com">
+              </div>
+              <div class="mb-3">
+                <label for="register-password" class="form-label" data-i18n="label-password">Пароль</label>
+                <input type="password" class="form-control" id="register-password" required placeholder="password">
+              </div>
+              <div class="mb-3">
+                <label for="register-confirm" class="form-label" data-i18n="label-confirm-password">Подтвердите
+                  пароль</label>
+                <input type="password" class="form-control" id="register-confirm" required placeholder="password">
+              </div>
+              <button type="submit" class="btn btn-primary w-100 mb-3"
+                data-i18n="btn-submit-register">Зарегистрироваться</button>
+              <div class="text-center">
+                <span data-i18n="text-has-account">Уже есть аккаунт?</span>
+                <a href="#" id="to-login" data-i18n="nav-login">Войти</a>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="bootstap/bootstrap.js"></script>
+  <script src="js/localization.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // No auto-redirect. User chooses to go to dashboard.
+  </script>
+</body>
+
+</html>
