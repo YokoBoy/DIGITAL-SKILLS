@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DigitalSkills - Ресурсы</title>
+  <link rel="stylesheet" href="fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="bootstap/bootstrap.css">
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="styles/style-updates.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="navigate">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg p-0">
+          <a class="logo" href="index.html">
+            <span class="header__bars"></span>
+            <span class="logo__text">Digital</span>Skills
+            <span class="header__shadow"></span>
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="header__btn"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="header__list">
+              <li>
+                <a class="header__link lang-btn active" href="#" data-lang="ru">RU</a>
+                <span class="header__divider">|</span>
+                <a class="header__link lang-btn" href="#" data-lang="uz">UZ</a>
+              </li>
+              <li><a class="header__link" href="index.html" data-i18n="nav-home">Главная</a></li>
+              <!-- Resources (Current Page) -->
+              <li><a class="header__link active" href="resources.html" data-i18n="nav-resources">Ресурсы</a></li>
+
+              <!-- Protected Links (Hidden by default, shown by auth.js) -->
+              <li class="auth-required" style="display: none;">
+                <a class="header__link" href="tasks.html" data-i18n="nav-tasks">Задания</a>
+              </li>
+              <li class="auth-required" style="display: none;">
+                <a class="header__link" href="cabinet.html" data-i18n="nav-cabinet">Кабинет</a>
+              </li>
+
+              <!-- Auth Buttons -->
+              <li id="login-item">
+                <a class="header__link" href="#" id="login-btn" data-bs-toggle="modal"
+                  data-bs-target="#loginModal">Войти</a>
+              </li>
+              <li id="logout-item" style="display: none;">
+                <a class="header__link" href="#" id="logout-btn">Выйти</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="circle circle1"></div>
+    <div class="cube cube1"></div>
+    <div class="cube cube2"></div>
+
+    <div class="container" style="padding-top: 150px; padding-bottom: 50px;">
+      <h2 class="text-white mb-5" data-i18n="resources-header">Образовательные ресурсы</h2>
+
+      <div class="row">
+        <!-- Video Section -->
+        <div class="col-12 mb-5">
+          <h3 class="text-primary mb-4"><i class="fas fa-video"></i> <span data-i18n="video-course-title">Видеокурс
+              Digital Skills</span></h3>
+
+          <!-- Dynamic Video Grid -->
+          <div class="row g-4" id="video-container">
+            <!-- Content will be injected by JS -->
+            <div class="col-12 text-center text-muted py-5">
+              <i class="fas fa-spinner fa-spin fa-2x"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Section -->
+        <div class="col-12">
+          <h3 class="text-success mb-4"><i class="fas fa-file-alt"></i> <span data-i18n="articles-title">Статьи и
+              Документы</span></h3>
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white border-secondary">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Методичка по использованию LMS</h5>
+                <small>3 дня назад</small>
+              </div>
+              <p class="mb-1">Полное руководство пользователя для учителей.</p>
+              <small class="text-muted">PDF, 2.4 MB</small>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white border-secondary">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Цифровой этикет</h5>
+                <small>1 неделя назад</small>
+              </div>
+              <p class="mb-1">Правила поведения в цифровой образовательной среде.</p>
+              <small class="text-muted">DOCX, 1.1 MB</small>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Auth Modal (Shared) -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="auth-modal-title" data-i18n="modal-title-login">Вход в систему</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="login-form-container">
+            <form id="login-form">
+              <div class="mb-3">
+                <label for="login-email" class="form-label" data-i18n="label-email">Email</label>
+                <input type="email" class="form-control" id="login-email" required placeholder="user@example.com">
+              </div>
+              <div class="mb-3">
+                <label for="login-password" class="form-label" data-i18n="label-password">Пароль</label>
+                <input type="password" class="form-control" id="login-password" required placeholder="password">
+              </div>
+              <button type="submit" class="btn btn-primary w-100 mb-3" data-i18n="btn-submit-login">Войти</button>
+              <div class="text-center">
+                <span data-i18n="text-no-account">Нет аккаунта?</span>
+                <a href="#" id="to-register" data-i18n="btn-register">Регистрация</a>
+              </div>
+            </form>
+          </div>
+          <div id="register-form-container" style="display: none;">
+            <form id="register-form">
+              <div class="mb-3">
+                <label for="register-name" class="form-label" data-i18n="label-name">Имя</label>
+                <input type="text" class="form-control" id="register-name" required placeholder="John Doe">
+              </div>
+              <div class="mb-3">
+                <label for="register-email" class="form-label" data-i18n="label-email">Email</label>
+                <input type="email" class="form-control" id="register-email" required placeholder="user@example.com">
+              </div>
+              <div class="mb-3">
+                <label for="register-password" class="form-label" data-i18n="label-password">Пароль</label>
+                <input type="password" class="form-control" id="register-password" required placeholder="password">
+              </div>
+              <div class="mb-3">
+                <label for="register-confirm" class="form-label" data-i18n="label-confirm-password">Подтвердите
+                  пароль</label>
+                <input type="password" class="form-control" id="register-confirm" required placeholder="password">
+              </div>
+              <button type="submit" class="btn btn-primary w-100 mb-3"
+                data-i18n="btn-submit-register">Зарегистрироваться</button>
+              <div class="text-center">
+                <span data-i18n="text-has-account">Уже есть аккаунт?</span>
+                <a href="#" id="to-login" data-i18n="nav-login">Войти</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Player Modal -->
+  <div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content bg-dark border-secondary">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title text-white" id="videoModalLabel">Video View</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-0">
+          <div class="ratio ratio-16x9">
+            <iframe id="videoPlayerFrame" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="bootstap/bootstrap.js"></script>
+  <script src="js/localization.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Modal Logic
+      const videoModal = new bootstrap.Modal(document.getElementById('videoModal'));
+      const videoFrame = document.getElementById('videoPlayerFrame');
+      const videoModalEl = document.getElementById('videoModal');
+
+      // Clear src on close to stop playback
+      videoModalEl.addEventListener('hidden.bs.modal', () => {
+        videoFrame.src = '';
+      });
+
+      window.playVideo = function (url, title) {
+        videoFrame.src = url;
+        document.getElementById('videoModalLabel').textContent = title;
+        videoModal.show();
+      };
+
+      function renderVideos() {
+        const lang = localStorage.getItem('selectedLanguage') || 'ru';
+        const container = document.getElementById('video-container');
+
+        if (!container) return;
+
+        // Clear loading or passed content
+        container.innerHTML = '';
+
+        const data = translations[lang];
+        if (data && data.videos && data.videos.length > 0) {
+          data.videos.forEach((videoUrl, index) => {
+            // Handle string url or object (if using objects later), assuming string here
+            const url = typeof videoUrl === 'string' ? videoUrl : videoUrl.url;
+            const title = typeof videoUrl === 'string' ? `${index + 1}-video dars` : (videoUrl.title || `${index + 1}-video dars`);
+
+            // Escaping for onclick
+            const safeUrl = url.replace(/'/g, "\\'");
+            const safeTitle = title.replace(/'/g, "\\'");
+
+            const card = document.createElement('div');
+            card.className = 'col-md-4'; // 3 per row
+            card.innerHTML = `
+                            <div class="card h-100 bg-dark text-white border-secondary">
+                                <div class="ratio ratio-16x9 bg-black position-relative" style="cursor: pointer;" onclick="playVideo('${safeUrl}', '${safeTitle}')">
+                                    <!-- Placeholder / Thumb -->
+                                    <div class="d-flex justify-content-center align-items-center h-100 w-100 text-white-50">
+                                        <i class="fas fa-play-circle fa-4x text-danger opacity-75"></i>
+                                    </div>
+                                    <div class="position-absolute bottom-0 start-0 w-100 p-2 bg-gradient-dark">
+                                        <small class="text-white"><i class="fas fa-play me-1"></i> Смотреть / Ko'rish</small>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title text-truncate" title="${title}">${title}</h5>
+                                    <button class="btn btn-outline-primary btn-sm w-100" onclick="playVideo('${safeUrl}', '${safeTitle}')">
+                                        <i class="fas fa-play"></i> Watch
+                                    </button>
+                                </div>
+                            </div>
+                      `;
+            container.appendChild(card);
+          });
+        } else {
+          // Fallback if no videos
+          container.innerHTML = `
+                          <div class="col-12 text-center text-white-50">
+                              <p>${lang === 'ru' ? 'Видеоматериалы отсутствуют.' : 'Videolar mavjud emas.'}</p>
+                              <small>${lang === 'ru' ? 'Попробуйте сменить язык на русский.' : 'Iltimos, keyinroq tekshiring yoki Rus tiliga o\'ting.'}</small>
+                          </div>
+                      `;
+        }
+      }
+
+      // Initial Render
+      renderVideos();
+
+      // Observer for language buttons
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Wait a bit for localization.js to update the lang key if needed
+          // But usually setLanguage updates localStorage immediately.
+          // We need to re-render.
+          setTimeout(renderVideos, 50);
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

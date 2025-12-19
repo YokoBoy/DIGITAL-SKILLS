@@ -14,9 +14,19 @@ const TaskRunner = {
     },
 
     open: function (taskId, level = 'basic') {
+        const lang = localStorage.getItem('selectedLanguage') || 'ru';
         let sourceData;
-        if (level === 'basic') sourceData = window.basicTasks;
-        else if (level === 'intermediate') sourceData = window.intermediateTasks;
+
+        // Try getting data from localization first
+        if (typeof translations !== 'undefined' && translations[lang] && translations[lang].tasks && translations[lang].tasks[level]) {
+            sourceData = translations[lang].tasks[level];
+        }
+
+        // Fallback or if localization not found (though localization.js should be loaded)
+        if (!sourceData || sourceData.length === 0) {
+            if (level === 'basic') sourceData = window.basicTasks;
+            else if (level === 'intermediate') sourceData = window.intermediateTasks;
+        }
 
         if (!sourceData) {
             console.error(`No data for level: ${level}`);
@@ -535,14 +545,17 @@ const TaskRunner = {
         let user = JSON.parse(localStorage.getItem('user'));
         if (!user) return;
 
-        const level = this.currentLevel || user.level || 'basic';
+        const lang = localStorage.getItem('selectedLanguage') || 'ru';
+        const rawLevel = this.currentLevel || user.level || 'basic';
+        // Composite key: e.g., 'ru_basic', 'uz_basic'
+        const levelKey = `${lang}_${rawLevel}`;
 
         if (!user.progress) user.progress = {};
-        if (!user.progress[level]) user.progress[level] = {};
+        if (!user.progress[levelKey]) user.progress[levelKey] = {};
 
-        const currentBest = user.progress[level][taskId] || 0;
+        const currentBest = user.progress[levelKey][taskId] || 0;
         if (score > currentBest) {
-            user.progress[level][taskId] = score;
+            user.progress[levelKey][taskId] = score;
             localStorage.setItem('user', JSON.stringify(user));
 
             let db = JSON.parse(localStorage.getItem('db_users')) || [];

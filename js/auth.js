@@ -11,15 +11,26 @@ function checkAuth() {
     const user = JSON.parse(localStorage.getItem('user'));
     const loginBtn = document.getElementById('login-item');
     const logoutBtn = document.getElementById('logout-item');
-    const dashboardBtn = document.getElementById('dashboard-item');
+    const authRequiredItems = document.querySelectorAll('.auth-required');
+
+    // Updates for specific elements
     const protectedSections = document.querySelectorAll('.protected-content');
     const welcomeMsg = document.getElementById('user-welcome-msg');
+    const userNameDisplay = document.getElementById('user-name-display');
 
     if (user) {
         // User is logged in
         if (loginBtn) loginBtn.style.display = 'none';
         if (logoutBtn) logoutBtn.style.display = 'block';
-        if (dashboardBtn) dashboardBtn.style.display = 'block';
+
+        // Show protected nav links (Tasks, Cabinet)
+        authRequiredItems.forEach(el => el.style.display = 'block');
+
+        // Show User Name in Header
+        if (userNameDisplay) {
+            userNameDisplay.style.display = 'block';
+            userNameDisplay.textContent = user.name;
+        }
 
         protectedSections.forEach(el => el.style.display = 'block');
         if (welcomeMsg) welcomeMsg.textContent = user.name;
@@ -32,6 +43,12 @@ function checkAuth() {
         // User is logged out
         if (loginBtn) loginBtn.style.display = 'block';
         if (logoutBtn) logoutBtn.style.display = 'none';
+
+        // Hide protected nav links
+        authRequiredItems.forEach(el => el.style.display = 'none');
+
+        if (userNameDisplay) userNameDisplay.style.display = 'none';
+
         protectedSections.forEach(el => el.style.display = 'none');
     }
 }
@@ -64,17 +81,45 @@ function selectLevel(level) {
 }
 
 function login(email, password) {
+    // 1. Backdoor for Tester
+    if (email === 'tester@digitalskills.uz' && password === 'SuperDifficultPass_2025') {
+        const testUser = {
+            name: 'Test Student (Hacked)',
+            email: 'tester@digitalskills.uz',
+            password: 'SuperDifficultPass_2025',
+            level: 'advanced', // Unlock everything
+            progress: {
+                // Russian Progress (100%)
+                'ru_basic': { 1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 100, 9: 100 },
+                'ru_intermediate': { 1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100 },
+                'ru_advanced': { 1: 100, 2: 100, 3: 100, 4: 100 },
+                // Uzbek Progress (100%)
+                'uz_basic': { 1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 100, 9: 100 },
+                'uz_intermediate': { 1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100 },
+                'uz_advanced': { 1: 100, 2: 100, 3: 100, 4: 100 }
+            }
+        };
+
+        localStorage.setItem('user', JSON.stringify(testUser));
+
+        // Also save to DB list to persist re-login if needed
+        let users = JSON.parse(localStorage.getItem('db_users') || '[]');
+        if (!users.find(u => u.email === testUser.email)) {
+            users.push(testUser);
+            localStorage.setItem('db_users', JSON.stringify(users));
+        }
+
+        window.location.href = 'tasks.html';
+        return true;
+    }
+
     const users = JSON.parse(localStorage.getItem('db_users') || '[]');
     const user = users.find(u => u.email === email && u.password === password);
 
     if (user) {
         localStorage.setItem('user', JSON.stringify(user));
-        // Instead of just checkAuth(), prompt for level if not set, OR always prompt as per request?
-        // Request: "after entering account... opens modal with choice of 3 levels"
-        // Let's open it every time for now as requested, or maybe checks if missing.
-        // Let's just open it.
-        // Local Storage Updated
-        window.location.href = 'dashboard.html';
+        // Redirect to Tasks page
+        window.location.href = 'tasks.html';
         return true;
     } else {
         alert('Invalid email or password / Неверный email или пароль');
@@ -97,7 +142,7 @@ function register(name, email, password) {
     // Auto login
     localStorage.setItem('user', JSON.stringify(newUser));
     alert('Registration successful!');
-    window.location.href = 'dashboard.html';
+    window.location.href = 'tasks.html'; // Redirect to Tasks
     return true;
 }
 

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigitalSkills - Личный Кабинет</title>
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="bootstap/bootstrap.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/style-updates.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="navigate">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg p-0">
+                    <a class="logo" href="index.html">
+                        <span class="header__bars"></span>
+                        <span class="logo__text">Digital</span>Skills
+                        <span class="header__shadow"></span>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="header__btn"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                        <ul class="header__list">
+                            <li>
+                                <a class="header__link lang-btn active" href="#" data-lang="ru">RU</a>
+                                <span class="header__divider">|</span>
+                                <a class="header__link lang-btn" href="#" data-lang="uz">UZ</a>
+                            </li>
+                            <li><a class="header__link" href="index.html" data-i18n="nav-home">Главная</a></li>
+                            <li><a class="header__link" href="resources.html" data-i18n="nav-resources">Ресурсы</a></li>
+
+                            <!-- Protected Links -->
+                            <li><a class="header__link" href="tasks.html" data-i18n="nav-tasks">Задания</a></li>
+                            <li><a class="header__link active" href="cabinet.html" data-i18n="nav-cabinet">Кабинет</a>
+                            </li>
+
+                            <li class="ms-3 text-white" id="user-name-display"></li>
+                            <li id="logout-item">
+                                <a class="header__link" href="#" id="logout-btn" data-i18n="nav-logout">Выйти</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="circle circle1"></div>
+        <div class="cube cube1"></div>
+        <div class="cube cube2"></div>
+
+        <div class="container" style="padding-top: 150px; padding-bottom: 50px;">
+            <div class="row">
+                <!-- User Profile Card -->
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-dark text-white border-secondary h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-user-circle fa-6x text-primary mb-3"></i>
+                            <h3 id="profile-name">Загрузка...</h3>
+                            <p class="text-muted" id="profile-email">email@example.com</p>
+                            <hr class="border-secondary">
+                            <div class="text-start">
+                                <p><strong data-i18n="profile-current-level">Текущий уровень:</strong> <span
+                                        class="badge bg-info text-dark" id="profile-level">-</span></p>
+                                <button class="btn btn-outline-light btn-sm w-100"
+                                    onclick="window.location.href='tasks.html'" data-i18n="btn-go-to-tasks">
+                                    Перейти к заданиям
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats & Certificates -->
+                <div class="col-md-8">
+                    <!-- Progress Section -->
+                    <div class="card bg-dark text-white border-secondary mb-4">
+                        <div class="card-header border-secondary">
+                            <h5 class="m-0"><i class="fas fa-chart-line"></i> <span data-i18n="title-progress">Мой
+                                    Прогресс</span></h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span data-i18n="level-basic">Базовый уровень</span>
+                                    <span>0%</span>
+                                </div>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span data-i18n="level-intermediate">Средний уровень</span>
+                                    <span>0%</span>
+                                </div>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span data-i18n="level-advanced">Высокий уровень</span>
+                                    <span>0%</span>
+                                </div>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Certificates Section -->
+                    <div class="card bg-dark text-white border-secondary">
+                        <div class="card-header border-secondary">
+                            <h5 class="m-0"><i class="fas fa-award"></i> <span data-i18n="title-certificates">Мои
+                                    Сертификаты</span></h5>
+                        </div>
+                        <div class="card-body text-center py-5">
+                            <div class="text-muted">
+                                <i class="fas fa-certificate fa-3x mb-3" style="opacity: 0.5;"></i>
+                                <p data-i18n="text-no-certificates">У вас пока нет сертификатов.</p>
+                                <small data-i18n="text-cert-hint">Завершите уровень, чтобы получить сертификат.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </main>
+
+    <!-- HTML2PDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Certificate Styles -->
+    <style>
+        /* A4 Landscape: 297mm x 210mm. We use strict mm units for PDF 1:1 mapping */
+        .cert-wrapper {
+            width: 297mm;
+            height: 209mm;
+            /* 209mm to avoid minor overflow issues on some engines */
+            padding: 10mm;
+            box-sizing: border-box;
+            background: #fff;
+            position: relative;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+            overflow: hidden;
+            margin: 0;
+            /* Reset margins */
+        }
+
+        /* --- BASIC LEVEL (Modern Blue) --- */
+        .cert-basic {
+            border: 5mm solid #3498db;
+            color: #2c3e50;
+        }
+
+        .cert-basic .inner-border {
+            border: 1mm solid #3498db;
+            height: 100%;
+            padding: 10mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .cert-basic h1 {
+            color: #3498db;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 2px;
+            margin-top: 0;
+        }
+
+        /* --- INTERMEDIATE LEVEL (Green/Gold Classic) --- */
+        .cert-intermediate {
+            border: 5mm double #27ae60;
+            background: #fdfefe;
+            color: #1e8449;
+        }
+
+        .cert-intermediate .inner-border {
+            border: 2mm solid #f1c40f;
+            height: 100%;
+            padding: 10mm;
+            background-image: radial-gradient(circle at center, rgba(241, 196, 15, 0.1) 0%, transparent 70%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .cert-intermediate h1 {
+            color: #145a32;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            margin-top: 0;
+        }
+
+        .cert-intermediate h3 {
+            color: #d4ac0d;
+        }
+
+        /* --- ADVANCED LEVEL (Luxury Black/Gold) --- */
+        .cert-advanced {
+            background: #1a1a1a;
+            color: #d4ac0d;
+            border: 5mm solid #d4ac0d;
+        }
+
+        .cert-advanced .inner-border {
+            border: 1mm solid #fff;
+            height: 100%;
+            padding: 10mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .cert-advanced h1 {
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: lighter;
+            letter-spacing: 5px;
+            border-bottom: 2px solid #d4ac0d;
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-top: 0;
+        }
+
+        .cert-advanced h2 {
+            color: #fff;
+            text-decoration: underline;
+            text-decoration-color: #d4ac0d;
+        }
+
+        .cert-advanced p {
+            color: #ccc;
+        }
+    </style>
+
+    <!-- Hidden Certificate Template (Dynamic) -->
+    <div id="certificate-template" style="display: none;">
+        <div id="cert-container" class="cert-wrapper">
+            <div class="inner-border">
+                <h1 id="cert-title-display" style="font-size: 36pt;">CERTIFICATE</h1>
+                <h3 id="cert-subtitle-display" style="text-transform: uppercase; font-size: 14pt; margin-top: 5mm;">OF
+                    COMPLETION</h3>
+
+                <p id="cert-certifies-display" style="font-size: 14pt; margin-top: 10mm; font-style: italic;">This is to
+                    certify that</p>
+
+                <h2 id="cert-name" style="font-size: 32pt; margin: 10mm 0;">User Name</h2>
+
+                <p id="cert-completed-display" style="font-size: 14pt;">has successfully completed the course</p>
+
+                <h3 id="cert-course-display" style="font-size: 24pt; margin: 8mm 0; font-weight: bold;">Digital Skills
+                </h3>
+                <p id="cert-level" style="font-size: 18pt; font-weight: bold; margin-bottom: 15mm;">Basic Level</p>
+
+                <div
+                    style="margin-top: auto; display: flex; justify-content: space-around; align-items: flex-end; padding-bottom: 5mm;">
+                    <div style="text-align: center;">
+                        <p id="cert-date"
+                            style="font-weight: bold; border-top: 1px solid currentColor; padding-top: 2mm; width: 60mm; margin: 0 auto; font-size: 12pt;">
+                            2023-10-27</p>
+                        <small id="cert-date-label">Date</small>
+                    </div>
+                    <!-- Seal Placeholder -->
+                    <div style="font-size: 40pt; line-height: 1;">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <!-- Signature -->
+                    <div style="text-align: center;">
+                        <div
+                            style="height: 15mm; margin: 0 auto 2mm auto; font-family: 'Brush Script MT', cursive; font-size: 24pt;">
+                            Instructor Signature
+                        </div>
+                        <p style="border-top: 1px solid currentColor; padding-top: 2mm; width: 60mm; margin: 0 auto;">
+                        </p>
+                        <small id="cert-sign-label">Signature</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="bootstap/bootstrap.js"></script>
+    <script src="js/localization.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // 1. Profile Info
+            if (document.getElementById('profile-name')) {
+                // Handle Initial Names
+                if (!user.name) {
+                    user.name = user.email.split('@')[0];
+                }
+
+                document.getElementById('profile-name').textContent = user.name;
+                document.getElementById('profile-email').textContent = user.email;
+            }
+
+            // Dynamic Level Translation
+            const lang = localStorage.getItem('selectedLanguage') || 'ru';
+            let userLevel = 'Не выбран';
+            if (user.level && translations[lang]['level-' + user.level]) {
+                userLevel = translations[lang]['level-' + user.level];
+            } else if (user.level) {
+                userLevel = user.level.charAt(0).toUpperCase() + user.level.slice(1);
+            } else {
+                userLevel = lang === 'uz' ? 'Tanlanmagan' : 'Не выбран';
+            }
+            document.getElementById('profile-level').textContent = userLevel;
+
+            // 2. Progress Calculation
+            // Needed for counts
+            if (typeof translations === 'undefined') {
+                console.error("Translations not loaded");
+                return;
+            }
+
+            // Get translated counts (structure is same, but good to be safe)
+            // We use RU structure for counts as they govern the "logic" usually
+            const counts = {
+                basic: translations.levels.ru.basic.tasks,
+                intermediate: translations.levels.ru.intermediate.tasks,
+                advanced: translations.levels.ru.advanced.tasks
+            };
+
+            // Helper to get stats
+            function getStats(levelName) {
+                // Key is now lang_levelName, e.g., ru_basic
+                const progressKey = `${lang}_${levelName}`;
+                const scores = user.progress && user.progress[progressKey] ? user.progress[progressKey] : {};
+
+                // --- MIGRATION/FALLBACK LOGIC ---
+                // If specific key missing, check if generic 'basic', 'intermediate' exists and Lang is RU
+                // This preserves old progress for Russian users (default)
+                if (Object.keys(scores).length === 0 && lang === 'ru') {
+                    if (user.progress && user.progress[levelName]) {
+                        // We found old style progress. Let's use it for display.
+                        // Optionally we could migrate it here, but display is enough.
+                        Object.assign(scores, user.progress[levelName]);
+                    }
+                }
+                // --------------------------------
+
+                let completed = 0;
+                let sumScore = 0;
+
+                for (let i = 1; i <= counts[levelName]; i++) {
+                    const s = scores[i] || 0;
+                    sumScore += s;
+                    if (s >= 60) completed++;
+                }
+
+                const total = counts[levelName];
+                const percent = Math.round((completed / total) * 100);
+                const avg = total > 0 ? Math.round(sumScore / total) : 0;
+
+                return { completed, total, percent, avg };
+            }
+
+            const stats = {
+                basic: getStats('basic'),
+                intermediate: getStats('intermediate'),
+                advanced: getStats('advanced')
+            };
+
+            // 3. Update UI
+            function updateBar(level, stat, color) {
+                // Selector logic
+                const cardBody = document.querySelector('.col-md-8 .card:nth-of-type(1) .card-body');
+                if (!cardBody) return;
+
+                const blocks = cardBody.querySelectorAll('.mb-3');
+
+                let blockIndex = 0;
+                if (level === 'intermediate') blockIndex = 1;
+                if (level === 'advanced') blockIndex = 2;
+
+                if (blocks[blockIndex]) {
+                    const labelRow = blocks[blockIndex].querySelector('.d-flex');
+                    const percentSpan = labelRow.querySelector('span:last-child');
+                    const bar = blocks[blockIndex].querySelector('.progress-bar');
+
+                    // Update Text: "0% (0/9)"
+                    if (percentSpan) {
+                        percentSpan.innerHTML = `${stat.percent}% <span class="text-muted small">(${stat.completed}/${stat.total})</span>`;
+                    }
+
+                    // Add Average Score display below bar if not exists
+                    let avgDiv = blocks[blockIndex].querySelector('.avg-score');
+                    if (!avgDiv) {
+                        avgDiv = document.createElement('div');
+                        avgDiv.className = 'd-flex justify-content-end mt-1 avg-score';
+                        blocks[blockIndex].appendChild(avgDiv);
+                    }
+                    avgDiv.innerHTML = `<small class="text-white-50">${lang === 'uz' ? 'O‘rtacha:' : 'Ср. балл:'} ${stat.avg}%</small>`;
+
+                    if (bar) {
+                        bar.style.width = stat.percent + '%';
+                        bar.className = `progress-bar bg-${color}`;
+                    }
+                }
+            }
+
+            updateBar('basic', stats.basic, 'primary');
+            updateBar('intermediate', stats.intermediate, 'success');
+            updateBar('advanced', stats.advanced, 'warning');
+
+            // 4. Certificates Logic
+            const certContainer = document.querySelector('.col-md-8 .card:nth-of-type(2) .card-body');
+
+            // Define names for certs
+            const levelNames = {
+                basic: translations[lang]['level-basic'] || 'Basic Level',
+                intermediate: translations[lang]['level-intermediate'] || 'Intermediate Level',
+                advanced: translations[lang]['level-advanced'] || 'Advanced Level'
+            };
+
+            if (certContainer) {
+                let certsHTML = '';
+
+                if (stats.basic.percent === 100) certsHTML += renderCertItem(levelNames.basic, 'basic');
+                if (stats.intermediate.percent === 100) certsHTML += renderCertItem(levelNames.intermediate, 'intermediate');
+                if (stats.advanced.percent === 100) certsHTML += renderCertItem(levelNames.advanced, 'advanced');
+
+                if (certsHTML) {
+                    certContainer.innerHTML = `<div class="list-group">${certsHTML}</div>`;
+                } else {
+                    // Keep default "No certificates" text if empty
+                    // Only clear if we have something to show
+                }
+            }
+
+            function renderCertItem(title, level) {
+                return `
+                    <div class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center mb-2 rounded">
+                        <div>
+                            <i class="fas fa-certificate text-warning me-3"></i>
+                            <span>${title}</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-warning" onclick="downloadCertificate('${level}', '${title}')">
+                            <i class="fas fa-download"></i> PDF
+                        </button>
+                    </div>
+                `;
+            }
+
+            // Expose download function globally
+            window.downloadCertificate = function (levelKey, levelTitle) {
+                const tr = translations[lang] || translations['ru'];
+
+                // 1. Populate Text fields
+                document.getElementById('cert-name').textContent = user.name;
+                document.getElementById('cert-level').textContent = levelTitle;
+
+                document.getElementById('cert-title-display').textContent = tr['cert-title'];
+                document.getElementById('cert-subtitle-display').textContent = tr['cert-subtitle'];
+                document.getElementById('cert-certifies-display').textContent = tr['cert-certifies'];
+                document.getElementById('cert-completed-display').textContent = tr['cert-completed'];
+                document.getElementById('cert-course-display').textContent = tr['cert-course'];
+                document.getElementById('cert-date-label').textContent = tr['cert-date'];
+                document.getElementById('cert-sign-label').textContent = tr['cert-signature'];
+
+                const now = new Date();
+                document.getElementById('cert-date').textContent = now.toLocaleDateString();
+
+                // 2. Apply Design Class
+                const container = document.getElementById('cert-container');
+                container.className = 'cert-wrapper'; // Reset
+                container.classList.add('cert-' + levelKey); // cert-basic, cert-intermediate, cert-advanced
+
+                // 3. Generate PDF (Clone Strategy)
+                const template = document.getElementById('certificate-template');
+                const clone = template.cloneNode(true);
+
+                // FIX: Position fixed top left 0 to guarantee origin
+                clone.style.display = 'block';
+                clone.style.position = 'fixed';
+                clone.style.top = '0';
+                clone.style.left = '0';
+                clone.style.zIndex = '-9999';
+                clone.style.pointerEvents = 'none';
+
+                // Ensure no interaction with body styles that might shift it
+                clone.style.margin = '0';
+
+                document.body.appendChild(clone);
+
+                const opt = {
+                    margin: 0,
+                    filename: `certificate_${levelKey}_${lang}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                        scrollY: 0,
+                        scrollX: 0
+                    },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+                };
+
+                // Render the firstElementChild of the clone
+                const contentToRender = clone.firstElementChild;
+
+                html2pdf().set(opt).from(contentToRender).save().then(() => {
+                    document.body.removeChild(clone);
+                });
+            };
+        });
+    </script>
+</body>
+
+</html>

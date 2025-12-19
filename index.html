@@ -33,13 +33,23 @@
                 <span class="header__divider">|</span>
                 <a class="header__link lang-btn" href="#" data-lang="uz">UZ</a>
               </li>
+              <li><a class="header__link active" href="index.html" data-i18n="nav-home">Главная</a></li>
+              <li><a class="header__link" href="resources.html" data-i18n="nav-resources">Ресурсы</a></li>
+
+              <!-- Protected Links -->
+              <li class="auth-required" style="display: none;">
+                <a class="header__link" href="tasks.html" data-i18n="nav-tasks">Задания</a>
+              </li>
+              <li class="auth-required" style="display: none;">
+                <a class="header__link" href="cabinet.html" data-i18n="nav-cabinet">Кабинет</a>
+              </li>
+
               <li id="login-item">
                 <a class="header__link" href="#" id="login-btn" data-bs-toggle="modal" data-bs-target="#loginModal"
                   data-i18n="nav-login">Войти</a>
               </li>
-              <li id="dashboard-item" style="display: none;">
-                <a class="header__link" href="dashboard.html" data-i18n="nav-dashboard">Кабинет</a>
-              </li>
+              <!-- Logout and User Name handled by auth.js -->
+              <li id="user-name-item" style="display: none;" class="ms-3 text-white"></li>
               <li id="logout-item" style="display: none;">
                 <a class="header__link" href="#" id="logout-btn" data-i18n="nav-logout">Выйти</a>
               </li>
