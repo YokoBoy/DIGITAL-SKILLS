@@ -35,12 +35,44 @@ function renderUserContent(user) {
         <div class="row">
     `;
 
+    // Get task data source based on level and language
+    let taskDataList = [];
+    if (user.level === 'basic') {
+        if (translations[lang] && translations[lang].tasks && translations[lang].tasks.basic) {
+            taskDataList = translations[lang].tasks.basic;
+        }
+    } else if (user.level === 'intermediate') {
+        if (typeof window.intermediateTasksData !== 'undefined' && window.intermediateTasksData[lang]) {
+            taskDataList = window.intermediateTasksData[lang];
+        } else if (typeof window.intermediateTasks !== 'undefined') {
+            taskDataList = window.intermediateTasks;
+        }
+    } else if (user.level === 'advanced') {
+        if (typeof window.advancedTasksData !== 'undefined' && window.advancedTasksData[lang]) {
+            taskDataList = window.advancedTasksData[lang];
+        } else if (typeof window.advancedTasks !== 'undefined') {
+            taskDataList = window.advancedTasks;
+        }
+    }
+
     for (let i = 1; i <= levelData.tasks; i++) {
         let taskTitle = (lang === 'ru' ? 'Задание' : 'Topshiriq') + ' ' + i;
         let taskDesc = (lang === 'ru' ? 'Описание задания...' : 'Topshiriq tavsifi...');
 
+        // Find actual task data
+        const taskObj = taskDataList.find(t => t.id === i);
+        if (taskObj) {
+            taskTitle = taskObj.title;
+            // Truncate description if too long for dashboard card
+            taskDesc = taskObj.description;
+            if (taskDesc.length > 100) taskDesc = taskDesc.substring(0, 97) + '...';
+        }
+
         if (user.level === 'advanced' && i === 4 && levelData.specialTask) {
-            taskDesc = levelData.specialTask;
+            // Keep special task override if it exists locally, or rely on advanced-data.js?
+            // The specialTask in localization.js for advanced is "It is your project".
+            // But advanced-data.js now has full description. Let's prefer advanced-data.js if available.
+            if (!taskObj) taskDesc = levelData.specialTask;
         }
 
         // Check progress
