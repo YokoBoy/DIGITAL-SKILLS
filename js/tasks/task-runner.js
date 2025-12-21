@@ -26,6 +26,7 @@ const TaskRunner = {
         if (!sourceData || sourceData.length === 0) {
             if (level === 'basic') sourceData = window.basicTasks;
             else if (level === 'intermediate') sourceData = window.intermediateTasks;
+            else if (level === 'advanced') sourceData = window.advancedTasks;
         }
 
         if (!sourceData) {
@@ -43,6 +44,7 @@ const TaskRunner = {
         this.currentTask = task;
         this.currentLevel = level;
         this.currentStageIndex = 0; // Reset stage
+        this.currentResults = []; // Store results for each stage
 
         const container = document.getElementById(this.config.containerId);
         const title = document.getElementById(this.config.titleId);
@@ -112,6 +114,7 @@ const TaskRunner = {
             else if (type === 'dragDrop') this.renderDragDrop(contentToRender, colRight);
             else if (type === 'matching') this.renderMatching(contentToRender, colRight);
             else if (type === 'ordering') this.renderOrdering(contentToRender, colRight);
+            else if (type === 'scenarioBuilder') this.renderScenarioBuilder(contentToRender, colRight);
             else if (type === 'info') {
                 // For info stage
                 if (contentToRender.content) {
@@ -134,6 +137,8 @@ const TaskRunner = {
             else if (type === 'dragDrop') this.renderDragDrop(contentToRender, container);
             else if (type === 'matching') this.renderMatching(contentToRender, container);
             else if (type === 'ordering') this.renderOrdering(contentToRender, container);
+            else if (type === 'scenarioBuilder') this.renderScenarioBuilder(contentToRender, container);
+            else if (type === 'checklist') this.renderChecklist(contentToRender, container);
             else if (type === 'info') {
                 if (contentToRender.content) {
                     container.innerHTML += contentToRender.content;
@@ -148,28 +153,381 @@ const TaskRunner = {
     setupStageButton: function (checkBtn, type, contentToRender) {
         // Clone button to remove old listeners
         const newBtn = checkBtn.cloneNode(true);
-        checkBtn.parentNode.replaceChild(newBtn, checkBtn);
+        if (checkBtn.parentNode) checkBtn.parentNode.replaceChild(newBtn, checkBtn);
+        else {
+            // Fallback if checkBtn was hidden/removed
+            const container = document.querySelector('.modal-footer') || document.querySelector('.task-footer');
+            if (container) container.appendChild(newBtn);
+        }
+
+        if (newBtn.style.display === 'none') newBtn.style.display = 'block';
 
         if (type === 'info') {
             newBtn.textContent = 'Далее / Next';
+            newBtn.className = 'btn btn-primary';
             newBtn.addEventListener('click', () => {
                 if (this.currentTask.stages && this.currentStageIndex < this.currentTask.stages.length - 1) {
                     this.currentStageIndex++;
                     this.renderCurrentStage(
                         document.getElementById(this.config.containerId),
-                        newBtn
+                        document.getElementById(this.config.checkBtnId)
                     );
                 } else {
-                    this.finishTask(100);
+                    this.currentResults.push(100); // Info always 100? Or just ignore in avg? Let's say 100 for reading.
+                    this.finishInfoTask();
                 }
             });
         } else {
-            newBtn.textContent = 'Check Answer';
+            if (this.currentTask.stages && this.currentStageIndex < this.currentTask.stages.length - 1) {
+                newBtn.textContent = 'Далее / Next';
+                newBtn.className = 'btn btn-primary';
+            } else {
+                newBtn.textContent = 'Завершить / Finish';
+                newBtn.className = 'btn btn-success';
+            }
             newBtn.addEventListener('click', () => {
-                this.checkAnswer(contentToRender);
+                this.processStage(contentToRender);
             });
         }
     },
+
+    isStageAnswered: function (type, content) {
+        if (type === 'quiz') {
+            const questions = content.questions || [];
+            // Check if all questions have a selected option
+            return questions.every((q, i) => document.querySelector(`input[name="q${i}"]:checked`));
+        } else if (type === 'dragDrop') {
+            // Check if all items are in a zone (not in the pool)
+            const pool = document.getElementById('dd-pool');
+            return pool && pool.children.length === 0;
+        } else if (type === 'matching') {
+            // Check if all left items are disabled (matched)
+            const lefts = document.querySelectorAll('#match-left .match-item');
+            return Array.from(lefts).every(el => el.classList.contains('disabled'));
+        } else if (type === 'ordering') {
+            // Ordering is always "answered" as items are present. 
+            // We could check if user interacted, but usually initial state is considered an answer if accepted.
+            // Let's assume always true for now, or maybe check if order changed? 
+            // User requirement "important to answer". Let's accept current state.
+            return true;
+
+        } else if (type === 'scenarioBuilder') {
+            return this.validateScenarioForm(content);
+        } else if (type === 'checklist') {
+            return this.validateChecklist(content);
+        }
+        return true;
+    },
+
+    validateScenarioForm: function (content) {
+        const form = document.getElementById('scenario-form');
+        if (!form) return false;
+
+        // Iterate over blocks to validate
+        for (let block of content.blocks) {
+            if (block.type === 'structureBuilder') {
+                if (this._currentStructure.length < (block.minItems || 0)) return false;
+            }
+            else if (block.type === 'file') {
+                const fileInp = form.querySelector(`input[name="${block.id}"]`);
+                if (!fileInp || !fileInp.value) return false;
+            }
+            else if (block.type === 'url_or_file') {
+                const url = form.querySelector(`input[name="${block.id}_url"]`).value;
+                const file = form.querySelector(`input[name="${block.id}_file"]`).value;
+                if (!url && !file) return false;
+            }
+            else if (block.type === 'checkbox_single') {
+                const chzk = form.querySelector(`input[name="${block.id}"]`);
+                if (!chzk || !chzk.checked) return false;
+            }
+            else if (block.type === 'select' || block.type === 'multiselect') {
+                // Check if any option selected
+                // For select: value not empty
+                // For multi: checked length > 0
+                if (block.type === 'select') {
+                    const sel = form.querySelector(`select[name="${block.id}"]`);
+                    if (sel && !sel.value) return false;
+                } else {
+                    const checked = form.querySelectorAll(`input[name="${block.id}"]:checked`);
+                    if (checked.length === 0) return false;
+                }
+            }
+        }
+        return true;
+    },
+
+    validateChecklist: function (content) {
+        return (content.groups || []).every((g, i) => {
+            const checked = document.querySelectorAll(`input[name="chk_group_${i}"]:checked`);
+            return checked.length > 0;
+        });
+    },
+
+    processStage: function (contentToCheck) {
+        const type = contentToCheck.type || this.currentTask.type;
+
+        // 1. Validate 'Presence' of answer
+        if (!this.isStageAnswered(type, contentToCheck)) {
+            alert('Пожалуйста, дайте ответ на задание, прежде чем продолжить.\nIltimeos, davom etishdan oldin javob bering.');
+            return;
+        }
+
+        // 2. Calculate Score (Silent)
+        let correctC = 0;
+        let total = 0;
+
+        if (type === 'quiz') {
+            const questions = contentToCheck.questions || [];
+            total = questions.length;
+            questions.forEach((q, i) => {
+                if (q.multi) {
+                    const checkedInputs = document.querySelectorAll(`input[name="q${i}"]:checked`);
+                    const checkedValues = Array.from(checkedInputs).map(inp => parseInt(inp.value)).sort((a, b) => a - b);
+                    const correctValues = (q.correct || []).sort((a, b) => a - b);
+
+                    // Exact match check
+                    if (checkedValues.length === correctValues.length &&
+                        checkedValues.every((val, idx) => val === correctValues[idx])) {
+                        correctC++;
+                    }
+                } else {
+                    const checked = document.querySelector(`input[name="q${i}"]:checked`);
+                    if (checked && parseInt(checked.value) === q.correct) {
+                        correctC++;
+                    }
+                }
+            });
+        }
+        else if (type === 'dragDrop') {
+            total = contentToCheck.items.length;
+            contentToCheck.items.forEach(item => {
+                const el = document.querySelector(`.dd-item[data-id="${item.id}"]`);
+                if (el) {
+                    const zone = el.closest('.dd-zone');
+                    if (zone && zone.dataset.cat === item.category) {
+                        correctC++;
+                    }
+                }
+            });
+        }
+        else if (type === 'matching') {
+            total = contentToCheck.pairs.length;
+            // logic: we check pairs. DOM elements have data-target.
+            document.querySelectorAll('#match-left .match-item').forEach(left => {
+                const targetId = left.getAttribute('data-target');
+                const leftId = left.dataset.id;
+                if (targetId && targetId === leftId) correctC++;
+            });
+        }
+        else if (type === 'ordering') {
+            total = contentToCheck.items.length;
+            const domItems = document.querySelectorAll('.order-item span');
+            domItems.forEach((span, i) => {
+                if (span.textContent === contentToCheck.items[i]) correctC++;
+            });
+        }
+
+        else if (type === 'scenarioBuilder') {
+            // For scenarios, if validation passed, we consider it 100% correct 
+            // as there's no "right answer" logic defined, only "completed".
+            // Or we could check specific values but requirements say "System checks if done".
+            // So if validateScenarioForm passed, Score = 100%.
+            total = 1;
+            correctC = 1;
+        }
+        else if (type === 'checklist') {
+            // Same for checklist, if validation passed (at least one per group), score = 100%
+            total = 1;
+            correctC = 1;
+        }
+
+        const stageScore = total > 0 ? Math.round((correctC / total) * 100) : 0;
+        this.currentResults.push(stageScore);
+
+        // 3. Navigation
+        if (this.currentTask.stages && this.currentStageIndex < this.currentTask.stages.length - 1) {
+            this.currentStageIndex++;
+            this.renderCurrentStage(
+                document.getElementById(this.config.containerId),
+                document.getElementById(this.config.checkBtnId)
+            );
+        } else {
+            this.finishInfoTask(); // Use finishInfoTask which calculates average
+        }
+    },
+
+    // --- SCENARIO BUILDER LOGIC ---
+    renderScenarioBuilder: function (data, container) {
+        let html = '<form id="scenario-form" class="needs-validation" onsubmit="return false;">';
+
+        data.blocks.forEach(block => {
+            html += `<div class="mb-4 border p-3 rounded bg-white shadow-sm" id="block-${block.id}">`;
+            html += `<label class="form-label fw-bold text-primary">${block.label}</label>`;
+
+            if (block.type === 'select') {
+                html += `<select class="form-select" name="${block.id}">
+                            <option value="">Выберите вариант...</option>
+                            ${block.options.map((opt, i) => `<option value="${i}">${opt}</option>`).join('')}
+                         </select>`;
+            }
+            else if (block.type === 'multiselect') {
+                html += `<div class="d-flex flex-wrap gap-3">`;
+                block.options.forEach((opt, i) => {
+                    html += `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="${block.id}" value="${i}" id="${block.id}_${i}">
+                        <label class="form-check-label" for="${block.id}_${i}">${opt}</label>
+                    </div>`;
+                });
+                html += `</div>`;
+            }
+            else if (block.type === 'static') {
+                html += `<div class="form-control-plaintext border p-2 bg-light">${block.value}</div>`;
+            }
+            else if (block.type === 'file') {
+                html += `<input type="file" class="form-control" name="${block.id}">`;
+            }
+            else if (block.type === 'url_or_file') {
+                html += `
+                <div class="mb-2">
+                    <label class="small text-muted">Ссылка:</label>
+                    <input type="url" class="form-control" name="${block.id}_url" placeholder="https://...">
+                </div>
+                <div class="text-center small text-muted my-1">- ИЛИ -</div>
+                <div class="mb-2">
+                    <label class="small text-muted">Загрузить файл:</label>
+                    <input type="file" class="form-control" name="${block.id}_file">
+                </div>`;
+            }
+            else if (block.type === 'checkbox_single') {
+                html += `
+                 <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="${block.id}" id="${block.id}">
+                    <label class="form-check-label" for="${block.id}">${block.text}</label>
+                 </div>`;
+            }
+            else if (block.type === 'interactiveParam') {
+                html += `
+                <div class="row g-3">
+                    <div class="col-md-7">
+                        <select class="form-select" name="${block.id}_type">
+                            <option value="">Тип интерактива...</option>
+                            ${block.options.map((opt, i) => `<option value="${i}">${opt}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-text">Мин.</span>
+                            <input type="number" class="form-control" name="${block.id}_time" placeholder="Время (мин)" min="0">
+                        </div>
+                    </div>
+                </div>`;
+            }
+            else if (block.type === 'structureBuilder') {
+                html += `
+                <div id="structure-list" class="mb-2"></div>
+                <div class="row g-2 align-items-end p-2 bg-light rounded">
+                     <div class="col-md-4">
+                        <select class="form-select form-select-sm" id="new-struct-type">
+                            <option value="">Тип блока...</option>
+                            ${block.blockTypes.map(t => `<option value="${t}">${t}</option>`).join('')}
+                        </select>
+                     </div>
+                     <div class="col-md-4">
+                        <select class="form-select form-select-sm" id="new-struct-format">
+                            <option value="">Формат...</option>
+                            ${block.formats.map(f => `<option value="${f}">${f}</option>`).join('')}
+                        </select>
+                     </div>
+                     <div class="col-md-2">
+                        <input type="number" class="form-control form-control-sm" id="new-struct-dur" placeholder="Мин" min="1">
+                     </div>
+                     <div class="col-md-2">
+                        <button class="btn btn-sm btn-outline-primary w-100" onclick="TaskRunner.addStructureBlock()">+ Doc</button>
+                     </div>
+                </div>
+                <input type="hidden" name="structure_data" id="structure-data-input">
+                `;
+
+                // Store options globally for helper to access
+                this._tempStructureOpts = block;
+                this._currentStructure = [];
+            }
+
+            html += `<div class="invalid-feedback d-block mt-1" id="err-${block.id}" style="display:none !important"></div>`;
+            html += `</div>`;
+        });
+
+        html += '</form>';
+        container.innerHTML += html;
+    },
+
+    addStructureBlock: function () {
+        const typeEl = document.getElementById('new-struct-type');
+        const fmtEl = document.getElementById('new-struct-format');
+        const durEl = document.getElementById('new-struct-dur');
+
+        const type = typeEl.value;
+        const fmt = fmtEl.value;
+        const dur = parseInt(durEl.value);
+
+        if (!type || !fmt || !dur) {
+            alert("Заполните все поля блока!");
+            return;
+        }
+
+        this._currentStructure.push({ type, format: fmt, duration: dur });
+
+        // Render List
+        this.renderStructureList();
+
+        // Reset inputs
+        typeEl.value = "";
+        fmtEl.value = "";
+        durEl.value = "";
+    },
+
+    removeStructureBlock: function (index) {
+        this._currentStructure.splice(index, 1);
+        this.renderStructureList();
+    },
+
+    renderStructureList: function () {
+        const container = document.getElementById('structure-list');
+        const input = document.getElementById('structure-data-input');
+
+        if (!container) return;
+
+        input.value = JSON.stringify(this._currentStructure);
+
+        container.innerHTML = this._currentStructure.map((item, i) => `
+            <div class="d-flex justify-content-between align-items-center border-bottom py-1">
+                <span><span class="badge bg-secondary">${i + 1}</span> <b>${item.type}</b> (${item.format}, ${item.duration} мин)</span>
+                <button class="btn btn-sm text-danger" onclick="TaskRunner.removeStructureBlock(${i})">&times;</button>
+            </div>
+        `).join('');
+    },
+    renderChecklist: function (data, container) {
+        let html = '<form id="checklist-form">';
+        data.groups.forEach((group, gIdx) => {
+            html += `<div class="card mb-3 shadow-sm">
+                <div class="card-header fw-bold">${group.title}</div>
+                <div class="card-body">`;
+            group.items.forEach((item, i) => {
+                html += `
+                 <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" name="chk_group_${gIdx}" id="g${gIdx}_${i}" value="${i}">
+                    <label class="form-check-label" for="g${gIdx}_${i}">${item}</label>
+                 </div>`;
+            });
+            html += `</div></div>`;
+        });
+        html += '</form>';
+        container.innerHTML += html;
+    },
+
+    // ----------------------------
 
     renderQuiz: function (items, container) {
         const questions = items.questions || [];
@@ -182,7 +540,7 @@ const TaskRunner = {
                     <div class="options-list">
                         ${q.options.map((opt, i) => `
                             <div class="form-check p-2 rounded hover-item">
-                                <input class="form-check-input" type="radio" name="q${index}" id="q${index}_${i}" value="${i}">
+                                <input class="form-check-input" type="${q.multi ? 'checkbox' : 'radio'}" name="q${index}" id="q${index}_${i}" value="${i}">
                                 <label class="form-check-label w-100" style="cursor:pointer" for="q${index}_${i}">${opt}</label>
                             </div>
                         `).join('')}
@@ -379,119 +737,11 @@ const TaskRunner = {
         });
     },
 
-    checkAnswer: function (contentToCheck) {
-        let correctC = 0;
-        let total = 0;
-
-        // Clear previous validation styles
-        document.querySelectorAll('.is-valid, .is-invalid, .text-success, .text-danger, .bg-success, .bg-danger, .border-success, .border-danger').forEach(el => {
-            el.classList.remove('is-valid', 'is-invalid', 'text-success', 'text-danger', 'bg-success', 'bg-danger', 'border-success', 'border-danger', 'text-white');
-        });
-
-        // Determine type of current stage/task
-        const type = contentToCheck.type || this.currentTask.type;
-
-        if (type === 'quiz') {
-            const questions = contentToCheck.questions || [];
-            total = questions.length;
-            questions.forEach((q, i) => {
-                const container = document.getElementById(`q-container-${i}`);
-                const checked = document.querySelector(`input[name="q${i}"]:checked`);
-                if (checked && parseInt(checked.value) === q.correct) {
-                    correctC++;
-                    if (container) container.classList.add('border-success');
-                    if (checked.nextElementSibling) checked.nextElementSibling.classList.add('text-success', 'fw-bold');
-                } else {
-                    if (container) container.classList.add('border-danger');
-                    if (checked && checked.nextElementSibling) checked.nextElementSibling.classList.add('text-danger', 'fw-bold');
-                }
-            });
-        }
-        else if (type === 'dragDrop') {
-            total = contentToCheck.items.length;
-            contentToCheck.items.forEach(item => {
-                const el = document.querySelector(`.dd-item[data-id="${item.id}"]`);
-                if (el) {
-                    const zone = el.closest('.dd-zone');
-                    if (zone && zone.dataset.cat === item.category) {
-                        correctC++;
-                        el.classList.add('bg-success', 'text-white');
-                    } else {
-                        el.classList.add('bg-danger', 'text-white');
-                    }
-                }
-            });
-        }
-        else if (type === 'matching') {
-            total = contentToCheck.pairs.length;
-            document.querySelectorAll('#match-left .match-item').forEach(left => {
-                const targetId = left.getAttribute('data-target');
-                const leftId = left.dataset.id;
-
-                if (targetId && targetId === leftId) {
-                    correctC++;
-                    left.classList.add('bg-success', 'text-white');
-                    const right = document.querySelector(`#match-right .match-item[data-id="${targetId}"]`);
-                    if (right) right.classList.add('bg-success', 'text-white');
-                } else if (targetId) {
-                    left.classList.add('bg-danger', 'text-white');
-                    const right = document.querySelector(`#match-right .match-item[data-id="${targetId}"]`);
-                    if (right) right.classList.add('bg-danger', 'text-white');
-                }
-            });
-        }
-        else if (type === 'ordering') {
-            total = contentToCheck.items.length;
-            const domItems = document.querySelectorAll('.order-item span');
-            domItems.forEach((span, i) => {
-                if (span.textContent === contentToCheck.items[i]) {
-                    correctC++;
-                    span.parentElement.classList.add('bg-success', 'text-white');
-                } else {
-                    span.parentElement.classList.add('bg-danger', 'text-white');
-                }
-            });
-        }
-
-        const scorePercent = total > 0 ? Math.round((correctC / total) * 100) : 0;
-
-        // Multi-stage Logic
-        if (this.currentTask.stages && this.currentTask.stages.length > 0) {
-            if (scorePercent >= 60) {
-                if (this.currentStageIndex < this.currentTask.stages.length - 1) {
-                    const alertDiv = document.createElement('div');
-                    alertDiv.className = 'alert alert-success mt-3';
-                    alertDiv.innerHTML = `Great! Stage passed (${scorePercent}%). Moving to next stage...`;
-
-                    const container = document.getElementById('task-modal-body');
-                    const oldAlert = container.querySelector('.alert');
-                    if (oldAlert) oldAlert.remove();
-                    container.appendChild(alertDiv);
-
-                    setTimeout(() => {
-                        this.currentStageIndex++;
-                        this.renderCurrentStage(
-                            document.getElementById(this.config.containerId),
-                            document.getElementById(this.config.checkBtnId)
-                        );
-                    }, 1500);
-                } else {
-                    this.finishTask(scorePercent);
-                }
-            } else {
-                const alertDiv = document.createElement('div');
-                alertDiv.className = 'alert alert-danger mt-3';
-                alertDiv.innerHTML = `Stage Failed (${scorePercent}%). You need 60% to proceed.`;
-
-                const container = document.getElementById('task-modal-body');
-                const oldAlert = container.querySelector('.alert');
-                if (oldAlert) oldAlert.remove();
-                container.appendChild(alertDiv);
-            }
-        } else {
-            // Single stage task
-            this.finishTask(scorePercent);
-        }
+    finishInfoTask: function () {
+        // Calculate average score
+        const total = this.currentResults.reduce((a, b) => a + b, 0);
+        const avg = this.currentResults.length > 0 ? Math.round(total / this.currentResults.length) : 100;
+        this.finishTask(avg);
     },
 
     finishTask: function (finalScore) {
@@ -525,11 +775,12 @@ const TaskRunner = {
             <p>${msg}</p>
         `;
 
-        const modalBody = document.getElementById('task-modal-body');
-        const oldAlert = modalBody.querySelector('.alert');
-        if (oldAlert) oldAlert.remove();
-
-        modalBody.appendChild(resultDiv);
+        const modalBody = document.getElementById(this.config.containerId);
+        if (modalBody) {
+            const oldAlert = modalBody.querySelector('.alert');
+            if (oldAlert) oldAlert.remove();
+            modalBody.appendChild(resultDiv);
+        }
 
         // Hide Check Button
         const checkBtn = document.getElementById(this.config.checkBtnId);

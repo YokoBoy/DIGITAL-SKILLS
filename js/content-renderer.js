@@ -49,8 +49,26 @@ function renderUserContent(user) {
         let cardClass = 'bg-dark text-white border-secondary';
         let btnText = lang === 'ru' ? 'Открыть' : 'Ochish';
         let btnClass = 'btn-primary';
+        let isLocked = false;
+
+        // SEQUENTIAL LOCKING LOGIC
+        if (i > 1) {
+            const prevScore = userProgress[i - 1] !== undefined ? userProgress[i - 1] : 0;
+            // If previous task score < 60, lock this one.
+            if (prevScore < 60) {
+                isLocked = true;
+                btnText = lang === 'ru' ? 'Заблокировано' : 'Yopiq';
+                btnClass = 'btn-secondary disabled';
+                cardClass = 'bg-secondary bg-opacity-10 text-white-50 border-secondary';
+            }
+        }
 
         if (score !== undefined) {
+            // ... score logic ...
+            // (Copy existing logic but ensure we don't overwrite lock if we are locked? 
+            // Actually if I have a score, it implies I unlocked it before. 
+            // But if I re-set level, maybe I have score but prev task is now < 60? 
+            // Unlikely scenario. Assuming consistent state.)
             sumPercent += score;
 
             let grade = 2;
@@ -90,15 +108,8 @@ function renderUserContent(user) {
                             ${score}% (${grade}) <span class="visually-hidden">score</span>
                          </span>`;
         } else {
-            // Task not touched yet
-            // If we treat untouched as 0 for "Average Grade" calculation purposes? 
-            // Usually average is over *attempted* or *total*? 
-            // User said "add all and divide by count of tasks", implying total tasks?
-            // "в оценке все добавляем и делим на кол заданий" -> Assuming divide by levelData.tasks
-            // But if I haven't done it, is it a 0 or a 2? Let's assume 0 score -> Grade 2.
-            sumGrade += 2; // Default fail grade? Or 0?
-            // "60% is 3, <60 is 2". So 0% is 2.
-            // Okay, sumGrade += 2 if not done.
+            // Not done logic
+            sumGrade += 2;
         }
 
         html += `
@@ -108,7 +119,7 @@ function renderUserContent(user) {
                     <div class="card-body">
                         <h5 class="card-title">${taskTitle}</h5>
                         <p class="card-text small">${taskDesc}</p>
-                        <a href="task.html?id=${i}&level=${user.level}" class="btn ${btnClass} btn-sm mt-2">${btnText}</a>
+                        <a href="${isLocked ? '#' : `task.html?id=${i}&level=${user.level}`}" class="btn ${btnClass} btn-sm mt-2 ${isLocked ? 'disabled' : ''}">${btnText}</a>
                     </div>
                 </div>
             </div>
