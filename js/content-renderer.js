@@ -13,7 +13,15 @@ function renderUserContent(user) {
     if (!levelData) return;
 
     // Calculate progress
-    const userProgress = user.progress && user.progress[user.level] ? user.progress[user.level] : {};
+    const progressKey = `${lang}_${user.level}`;
+    let userProgress = user.progress && user.progress[progressKey] ? user.progress[progressKey] : {};
+
+    // Fallback: If no lang-specific progress, check generic key (legacy support for RU default)
+    if (Object.keys(userProgress).length === 0 && lang === 'ru') {
+        if (user.progress && user.progress[user.level]) {
+            userProgress = user.progress[user.level];
+        }
+    }
     let completedCount = 0;
     let sumPercent = 0;
     let sumGrade = 0;

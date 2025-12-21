@@ -51,7 +51,7 @@ body{
     color: var(--violet);
     font-size: 24px;
     line-height: 16px;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
 }
 .header__link:hover{
     color: #fff;
@@ -164,7 +164,7 @@ body{
 .slider__title{
     font-size: 24px;
     line-height: 22px;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     color: var(--black);
     font-weight: 600;
 }
@@ -173,7 +173,7 @@ body{
     font-weight: 600;
     font-size: 40px;
     line-height: 50px;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     color: var(--violet);
     margin: 10px 0 25px;
 }
@@ -266,7 +266,7 @@ body{
 }
 
 .front__descr{
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     font-size: 18px;
     line-height: 150%;
     color: var(--black);
@@ -342,7 +342,7 @@ body{
     font-weight: 600;
     font-size: 40px;
     line-height: 49px;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     color: var(--violet);
 }
 .cap .row{
@@ -364,7 +364,7 @@ body{
 .accordion-body{
     font-size: 18px;
     line-height: 150%;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     color: #fff;
     background: var(--violet);
     padding: 10px 30px 55px;
@@ -499,7 +499,7 @@ body{
 .works__descr{
     font-size: 18px;
     line-height: 150%;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     color: var(--black);
     margin: 25px 0 20px;
 }
@@ -556,7 +556,7 @@ body{
     padding: 11px 25px;
     font-size: 24px;
     line-height: 29px;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     color: var(--violet);
 }
 .footer__link:hover{
