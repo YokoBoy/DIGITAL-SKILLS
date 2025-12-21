@@ -247,36 +247,36 @@ const translations = {
             basic: [
                 {
                     id: 1,
-                    title: "Задание 1: Тест (Квест)",
-                    description: "Пройдите тест, отвечая на вопросы по одному.",
+                    title: "1-topshiriq: Test (Kvest)",
+                    description: "Savollarga bittadan javob berib, testdan o'ting.",
                     type: 'quiz',
                     stages: [
-                        { type: 'quiz', questions: [{ text: "Какое положение наиболее точно отражает отличие цифровой педагогики от традиционной?", options: ["a) Использование компьютеров вместо учебников", "b) Перенос учебного материала в электронный формат", "c) Изменение роли преподавателя и логики организации учебной деятельности", "d) Увеличение количества мультимедийных материалов"], correct: 2 }] },
-                        { type: 'quiz', questions: [{ text: "Что является ключевой характеристикой цифрового общества в образовательном контексте?", options: ["a) Повсеместное использование компьютеров", "b) Доступность онлайн-ресурсов", "c) Интеграция цифровых технологий в социальные и образовательные практики", "d) Развитие дистанционного обучения"], correct: 2 }] },
-                        { type: 'quiz', questions: [{ text: "Какова основная функция цифровых сервисов в образовательном процессе?", options: ["a) Хранение учебных материалов", "b) Организация и поддержка совместной учебной деятельности", "c) Замена преподавателя", "d) Контроль посещаемости"], correct: 1 }] },
-                        { type: 'quiz', questions: [{ text: "Что относится к современным техническим руководствам в образовании?", options: ["a) Инструкции по эксплуатации оборудования", "b) Методические рекомендации по использованию цифровых технологий", "c) Учебные планы и программы", "d) Электронные журналы успеваемости"], correct: 1 }] },
-                        { type: 'quiz', questions: [{ text: "Какое устройство относится к устройствам ввода информации?", options: ["a) Проектор", "b) Монитор", "c) Сканер", "d) Акустическая система"], correct: 2 }] },
-                        { type: 'quiz', questions: [{ text: "Основная педагогическая функция экранных и визуальных уроков заключается в:", options: ["a) Замене устного объяснения", "b) Повышении наглядности и визуализации учебного материала", "c) Сокращении времени занятия", "d) Автоматизации контроля знаний"], correct: 1 }] },
-                        { type: 'quiz', questions: [{ text: "В чем заключается образовательный потенциал storytelling в цифровой среде?", options: ["a) В передаче большого объёма информации", "b) В формировании эмоциональной вовлечённости и смыслового понимания материала", "c) В использовании анимации и видео", "d) В упрощении теоретического содержания"], correct: 1 }] },
-                        { type: 'quiz', questions: [{ text: "Какое преимущество мультимедийных учебных материалов является ключевым?", options: ["a) Возможность быстрого обновления контента", "b) Интеграция текста, звука и изображения для повышения усвоения материала", "c) Простота технической реализации", "d) Снижение роли преподавателя"], correct: 1 }] },
-                        { type: 'quiz', questions: [{ text: "Какое направление использования видеокамер наиболее актуально в современном образовании?", options: ["a) Фиксация посещаемости", "b) Запись лекций для архива", "c) Создание учебных видеоматериалов и интерактивного контента", "d) Контроль дисциплины"], correct: 2 }] },
-                        { type: 'quiz', questions: [{ text: "Какова основная функция программного обеспечения интерактивной доски?", options: ["a) Проецирование изображения", "b) Управление мультимедийным оборудованием", "c) Обеспечение интерактивного взаимодействия с учебным материалом", "d) Хранение учебных файлов"], correct: 2 }] },
-                        { type: 'quiz', questions: [{ text: "Какую роль выполняют сетевые технологии в дистанционном обучении?", options: ["a) Обеспечивают визуализацию контента", "b) Создают техническую основу для передачи и взаимодействия данных", "c) Заменяют образовательные платформы", "d) Используются только для связи"], correct: 1 }] },
-                        { type: 'quiz', questions: [{ text: "Что является характерной особенностью SMART-технологий в образовании?", options: ["a) Использование мобильных устройств", "b) Интерактивность и адаптивность образовательного процесса", "c) Применение искусственного интеллекта", "d) Онлайн-формат обучения"], correct: 1 }] },
-                        { type: 'quiz', questions: [{ text: "Какое преимущество облачных сервисов наиболее значимо при разработке электронных учебных ресурсов?", options: ["a) Высокая скорость интернета", "b) Возможность коллективной работы и удалённого доступа", "c) Защита от копирования", "d) Автономность использования"], correct: 1 }] },
-                        { type: 'quiz', questions: [{ text: "Какое педагогическое условие является ключевым при использовании социальных сетей в вузе?", options: ["a) Популярность платформы среди студентов", "b) Наличие мобильного приложения", "c) Методически обоснованная интеграция в учебный процесс", "d) Возможность обмена файлами"], correct: 2 }] },
-                        { type: 'quiz', questions: [{ text: "Какова основная функция МООК в системе высшего образования?", options: ["a) Замена очного обучения", "b) Средство контроля знаний", "c) Поддержка самостоятельного и непрерывного обучения", "d) Повышение рейтинга университета"], correct: 2 }] }
+                        { type: 'quiz', questions: [{ text: "Raqamli pedagogikaning an'anaviy pedagogikadan farqini qaysi holat eng aniq aks ettiradi?", options: ["a) Darsliklar o'rniga kompyuterlardan foydalanish", "b) O'quv materialini elektron formatga o'tkazish", "c) O'qituvchi roli va o'quv faoliyati tashkil etish mantiqining o'zgarishi", "d) Multimedia materiallari sonining ko'payishi"], correct: 2 }] },
+                        { type: 'quiz', questions: [{ text: "Ta'lim kontekstida raqamli jamiyatning asosiy xususiyati nima?", options: ["a) Kompyuterlardan hamma joyda foydalanish", "b) Onlayn resurslarning mavjudligi", "c) Raqamli texnologiyalarning ijtimoiy va ta'lim amaliyotiga integratsiyasi", "d) Masofaviy ta'limning rivojlanishi"], correct: 2 }] },
+                        { type: 'quiz', questions: [{ text: "Ta'lim jarayonida raqamli xizmatlarning asosiy funksiyasi nima?", options: ["a) O'quv materiallarini saqlash", "b) Hamkorlikdagi o'quv faoliyatini tashkil etish va qo'llab-quvvatlash", "c) O'qituvchini almashtirish", "d) Davomatni nazorat qilish"], correct: 1 }] },
+                        { type: 'quiz', questions: [{ text: "Ta'limda zamonaviy texnik qo'llanmalarga nimalar kiradi?", options: ["a) Uskunalardan foydalanish bo'yicha yo'riqnomalar", "b) Raqamli texnologiyalardan foydalanish bo'yicha metodik tavsiyalar", "c) O'quv rejalari va dasturlari", "d) O'zlashtirish elektron jurnallari"], correct: 1 }] },
+                        { type: 'quiz', questions: [{ text: "Qaysi qurilma axborotni kiritish qurilmasiga kiradi?", options: ["a) Proyektor", "b) Monitor", "c) Skaner", "d) Akustik tizim"], correct: 2 }] },
+                        { type: 'quiz', questions: [{ text: "Ekranli va vizual darslarning asosiy pedagogik funksiyasi nimadan iborat?", options: ["a) Og'zaki tushuntirishni almashtirish", "b) O'quv materialining ko'rgazmaliligi va vizualizatsiyasini oshirish", "c) Dars vaqtini qisqartirish", "d) Bilim nazoratini avtomatlashtirish"], correct: 1 }] },
+                        { type: 'quiz', questions: [{ text: "Raqamli muhitda storytellingning ta'limiy salohiyati nimada?", options: ["a) Katta hajmdagi ma'lumotni uzatishda", "b) Hissiy jalb qilish va materialni ma'no jihatdan tushunishni shakllantirishda", "c) Animatsiya va videodan foydalanishda", "d) Nazariy mazmunni soddalashtirishda"], correct: 1 }] },
+                        { type: 'quiz', questions: [{ text: "Multimedia o'quv materiallarining qaysi afzalligi asosiy hisoblanadi?", options: ["a) Kontentni tez yangilash imkoniyati", "b) Materialni o'zlashtirishni oshirish uchun matn, tovush va tasvir integratsiyasi", "c) Texnik amalga oshirishning soddaligi", "d) O'qituvchi rolini kamaytirish"], correct: 1 }] },
+                        { type: 'quiz', questions: [{ text: "Zamonaviy ta'limda videokameralardan foydalanishning qaysi yo'nalishi eng dolzarb?", options: ["a) Davomatni qayd etish", "b) Arxiv uchun ma'ruzalarni yozish", "c) O'quv videomateriallari va interaktiv kontent yaratish", "d) Intizomni nazorat qilish"], correct: 2 }] },
+                        { type: 'quiz', questions: [{ text: "Interaktiv doska dasturiy ta'minotining asosiy funksiyasi nima?", options: ["a) Tasvirni proektsiyalash", "b) Multimedia uskunalarini boshqarish", "c) O'quv materiali bilan interaktiv hamkorlikni ta'minlash", "d) O'quv fayllarini saqlash"], correct: 2 }] },
+                        { type: 'quiz', questions: [{ text: "Masofaviy ta'limda tarmoq texnologiyalari qanday rol o'ynaydi?", options: ["a) Kontent vizualizatsiyasini ta'minlaydi", "b) Ma'lumotlarni uzatish va o'zaro hamkorlik qilish uchun texnik asos yaratadi", "c) Ta'lim platformalarini almashtiradi", "d) Faqat aloqa uchun foydalaniladi"], correct: 1 }] },
+                        { type: 'quiz', questions: [{ text: "Ta'limda SMART-texnologiyalarning o'ziga xos xususiyati nima?", options: ["a) Mobil qurilmalardan foydalanish", "b) Ta'lim jarayonining interaktivligi va moslashuvchanligi", "c) Sun'iy intellektni qo'llash", "d) Onlayn ta'lim formati"], correct: 1 }] },
+                        { type: 'quiz', questions: [{ text: "Elektron o'quv resurslarini ishlab chiqishda bulutli xizmatlarning qaysi afzalligi eng muhim?", options: ["a) Internetning yuqori tezligi", "b) Jamoaviy ishlash va masofadan kirish imkoniyati", "c) Nusxa ko'chirishdan himoya", "d) Foydalanish avtonomiyasi"], correct: 1 }] },
+                        { type: 'quiz', questions: [{ text: "OTMda ijtimoiy tarmoqlardan foydalanishda qaysi pedagogik shart asosiy hisoblanadi?", options: ["a) Talabalar orasida platformaning mashhurligi", "b) Mobil ilovaning mavjudligi", "c) O'quv jarayoniga metodik asoslangan integratsiya", "d) Fayl almashish imkoniyati"], correct: 2 }] },
+                        { type: 'quiz', questions: [{ text: "Oliy ta'lim tizimida MOOC (Ochiq onlayn kurslar)ning asosiy funksiyasi nima?", options: ["a) Kunduzgi ta'limni almashtirish", "b) Bilimni nazorat qilish vositasi", "c) Mustaqil va uzluksiz ta'limni qo'llab-quvvatlash", "d) Universitet reytingini oshirish"], correct: 2 }] }
                     ]
                 },
                 {
                     id: 2,
                     type: 'dragDrop',
-                    title: "Задание 2: Перетаскивание",
-                    description: "Перетащите цифровые инструменты в соответствующие категории.",
+                    title: "2-topshiriq: Surib tashlash",
+                    description: "Raqamli vositalarni tegishli toifalarga surib joylashtiring.",
                     categories: [
-                        { id: 'pres', title: "Представление учебного материала" },
-                        { id: 'interact', title: "Организация взаимодействия" },
-                        { id: 'control', title: "Контроль и оценивание" }
+                        { id: 'pres', title: "O'quv materialini taqdim etish" },
+                        { id: 'interact', title: "Hamkorlikni tashkil etish" },
+                        { id: 'control', title: "Nazorat va baholash" }
                     ],
                     items: [
                         { id: 'i1', text: "Edpuzzle", category: 'pres' },
@@ -289,98 +289,98 @@ const translations = {
                 {
                     id: 3,
                     type: 'matching',
-                    title: "Задание 3: Соотнесение",
-                    description: "Соотнесите формат цифрового контента с его назначением.",
+                    title: "3-topshiriq: Moslashtirish",
+                    description: "Raqamli kontent formatini uning maqsadi bilan moslashtiring.",
                     pairs: [
-                        { left: "Видеоурок с интерактивными вопросами", right: "Закрепление знаний через практическую деятельность в процессе просмотра" },
-                        { left: "Инфографика", right: "Наглядное представление сложной информации и связей" },
-                        { left: "Multimedia longread", right: "Формирование целостного понимания темы через сочетание текста и мультимедиа" },
-                        { left: "Подкаст (аудиоурок)", right: "Развитие слухового восприятия и возможности обучения в мобильном формате" },
-                        { left: "Интерактивная презентация", right: "Активизация познавательной деятельности и вовлечение обучающихся" },
-                        { left: "Онлайн-тест с автоматической проверкой", right: "Контроль и самопроверка усвоения учебного материала" }
+                        { left: "Interaktiv savollar bilan videodars", right: "Ko'rish jarayonida amaliy faoliyat orqali bilimlarni mustahkamlash" },
+                        { left: "Infografika", right: "Murakkab axborot va bog'liqliklarni ko'rgazmali taqdim etish" },
+                        { left: "Multimedia longread", right: "Matn va multimediani uyg'unlashtirish orqali mavzuni yaxlit tushunishni shakllantirish" },
+                        { left: "Podkast (audiodars)", right: "Eshitish qobiliyatini rivojlantirish va mobil formatda o'qish imkoniyati" },
+                        { left: "Interaktiv taqdimot", right: "Bilish faoliyatini faollashtirish va o'quvchilarni jalb qilish" },
+                        { left: "Avtomatik tekshiriladigan onlayn test", right: "O'quv materialini o'zlashtirishni nazorat qilish va o'z-o'zini tekshirish" }
                     ]
                 },
                 {
                     id: 4,
                     type: 'ordering',
-                    title: "Задание 4: Последовательность",
-                    description: "Расположите этапы разработки контента в правильном порядке.",
+                    title: "4-topshiriq: Ketma-ketlik",
+                    description: "Kontent ishlab chiqish bosqichlarini to'g'ri tartibda joylashtiring.",
                     items: [
-                        "Анализ учебной цели и целевой аудитории",
-                        "Выбор цифрового формата и инструментов",
-                        "Проектирование структуры контента",
-                        "Создание мультимедийных элементов",
-                        "Интеграция интерактивных компонентов",
-                        "Проверка и корректировка контента"
+                        "O'quv maqsadi va maqsadli auditoriyani tahlil qilish",
+                        "Raqamli format va vositalarni tanlash",
+                        "Kontent tuzilmasini loyihalash",
+                        "Multimedia elementlarini yaratish",
+                        "Interaktiv komponentlarni integratsiya qilish",
+                        "Kontentni tekshirish va tuzatish"
                     ]
                 },
                 {
                     id: 5,
                     type: 'matching',
-                    title: "Задание 5: Кейс (Ситуация)",
-                    situation: `<h5>Ситуация:</h5><p>Вы — учитель информатики.</p><p>Вам необходимо провести урок по теме «Информация и её виды».</p><p>Часть учащихся находится в классе, часть — обучается дистанционно.</p><p><strong>Цель урока:</strong></p><ul><li>наглядно объяснить материал;</li><li>активизировать внимание учащихся;</li><li>получить быструю обратную связь.</li></ul>`,
-                    description: "Соотнесите цифровой инструмент с этапом урока, опираясь на педагогическую целесообразность.",
+                    title: "5-topshiriq: Keys (Vaziyat)",
+                    situation: `<h5>Vaziyat:</h5><p>Siz — informatika o'qituvchisisiz.</p><p>Siz «Axborot va uning turlari» mavzusida dars o'tishingiz kerak.</p><p>O'quvchilarning bir qismi sinfda, bir qismi esa masofadan o'qimoqda.</p><p><strong>Dars maqsadi:</strong></p><ul><li>materialni ko'rgazmali tushuntirish;</li><li>o'quvchilar diqqatini faollashtirish;</li><li>tezkor qayta aloqa olish.</li></ul>`,
+                    description: "Pedagogik maqsadga muvofiqlikka tayangan holda raqamli vositani dars bosqichi bilan moslashtiring.",
                     pairs: [
-                        { left: "Интерактивная презентация", right: "Объяснение нового материала" },
-                        { left: "Короткое учебное видео", right: "Актуализация знаний" },
-                        { left: "Онлайн-опрос", right: "Рефлексия" },
-                        { left: "Облачный документ", right: "Закрепление" }
+                        { left: "Interaktiv taqdimot", right: "Yangi mavzuni tushuntirish" },
+                        { left: "Qisqa o'quv videosi", right: "Bilimlarni faollashtirish" },
+                        { left: "Onlayn so'rovnoma", right: "Refleksiya" },
+                        { left: "Bulutli hujjat", right: "Mustahkamlash" }
                     ]
                 },
                 {
                     id: 6,
                     type: 'matching',
-                    title: "Задание 6: Облачные технологии",
-                    situation: `<h5>Задачa:</h5><p>Учитель информатики организует самостоятельную работу по теме «Облачные технологии и их возможности».</p><p><strong>Задача — сделать выполнение работы:</strong></p><ul><li>структурированным;</li><li>контролируемым;</li><li>понятным для учащихся.</li></ul>`,
-                    description: "Соотнесите функцию облачного сервиса с её назначением.",
+                    title: "6-topshiriq: Bulutli texnologiyalar",
+                    situation: `<h5>Vazifa:</h5><p>Informatika o'qituvchisi «Bulutli texnologiyalar va ularning imkoniyatlari» mavzusida mustaqil ish tashkil qilmoqda.</p><p><strong>Vazifa — ish bajarilishini quyidagicha qilish:</strong></p><ul><li>tuzilmali;</li><li>nazorat qilinadigan;</li><li>o'quvchilar uchun tushunarli.</li></ul>`,
+                    description: "Bulutli xizmat funksiyasini uning maqsadi bilan moslashtiring.",
                     pairs: [
-                        { left: "Совместный доступ", right: "Совместная работа над заданием" },
-                        { left: "Комментарии", right: "Обратная связь от учителя" },
-                        { left: "Хранение файлов", right: "Единое место хранения работ" },
-                        { left: "История изменений", right: "Контроль вклада каждого ученика" }
+                        { left: "Birgalikda kirish", right: "Topshiriq ustida hamkorlikda ishlash" },
+                        { left: "Izohlar", right: "O'qituvchidan qayta aloqa" },
+                        { left: "Fayllarni saqlash", right: "Ishlarni saqlashning yagona joyi" },
+                        { left: "O'zgarishlar tarixi", right: "Har bir o'quvchi hissasini nazorat qilish" }
                     ]
                 },
                 {
                     id: 7,
                     type: 'matching',
-                    title: "Задание 7: Интерактивные элементы",
-                    situation: `<h5>Ситуация:</h5><p>Учитель информатики замечает, что учащиеся на уроках:</p><ul><li>малоактивны;</li><li>слабо вовлечены;</li><li>формально выполняют задания.</li></ul><p>Для повышения интереса используются цифровые интерактивные элементы.</p>`,
-                    description: "Соотнесите интерактивный элемент с навыком.",
+                    title: "7-topshiriq: Interaktiv elementlar",
+                    situation: `<h5>Vaziyat:</h5><p>Informatika o'qituvchisi darslarda o'quvchilarning:</p><ul><li>kam faolligini;</li><li>o'qishga jalb qilinmaganligini;</li><li>topshiriqlarni rasmiy bajarayotganligini sezdi.</li></ul><p>Qiziqishni oshirish uchun raqamli interaktiv elementlardan foydalanilmoqda.</p>`,
+                    description: "Interaktiv elementni ko'nikma bilan moslashtiring.",
                     pairs: [
-                        { left: "Онлайн-викторина", right: "Критическое мышление" },
-                        { left: "Интерактивное видео", right: "Анализ информации" },
-                        { left: "Мини-опрос", right: "Цифровая коммуникация" },
-                        { left: "Игровой тест", right: "Осознанное использование цифровых инструментов" }
+                        { left: "Onlayn viktorina", right: "Tanqidiy fikrlash" },
+                        { left: "Interaktiv video", right: "Axborotni tahlil qilish" },
+                        { left: "Mini-so'rovnoma", right: "Raqamli muloqot" },
+                        { left: "O'yin testi", right: "Raqamli vositalardan ongli foydalanish" }
                     ]
                 },
                 {
                     id: 8,
                     type: 'dragDrop',
-                    title: "Задание 8: Этика и безопасность",
-                    situation: `<h5>Ситуация:</h5><p>Учащиеся активно используют:</p><ul><li>социальные сети;</li><li>мессенджеры;</li><li>школьные онлайн-платформы.</li></ul><p>Не всегда их действия в цифровой среде являются этичными и безопасными.</p><p>Учитель информатики формирует у учащихся навыки ответственного поведения в сети.</p>`,
-                    description: "Распределите действия по категориям.",
+                    title: "8-topshiriq: Etika va xavfsizlik",
+                    situation: `<h5>Vaziyat:</h5><p>O'quvchilar quyidagilardan faol foydalanmoqda:</p><ul><li>ijtimoiy tarmoqlar;</li><li>messenerlar;</li><li>maktab onlayn platformalari.</li></ul><p>Ularning raqamli muhitdagi harakatlari har doim ham etik va xavfsiz emas.</p><p>Informatika o'qituvchisi o'quvchilarda tarmoqda mas'uliyatli xulq-atvor ko'nikmalarini shakllantirmoqda.</p>`,
+                    description: "Harakatlarni toifalar bo'yicha taqsimlang.",
                     categories: [
-                        { id: 'ethical', title: "Этичное и безопасное поведение" },
-                        { id: 'unethical', title: "Неэтичное или опасное поведение" }
+                        { id: 'ethical', title: "Etik va xavfsiz xulq-atvor" },
+                        { id: 'unethical', title: "Noetik yoki xavfli xulq-atvor" }
                     ],
                     items: [
-                        { id: 'p1', text: "Использование сложного пароля", category: 'ethical' },
-                        { id: 'p2', text: "Указание источника информации", category: 'ethical' },
-                        { id: 'p3', text: "Публикация чужой фотографии без разрешения", category: 'unethical' },
-                        { id: 'p4', text: "Оскорбление в комментариях", category: 'unethical' }
+                        { id: 'p1', text: "Murakkab paroldan foydalanish", category: 'ethical' },
+                        { id: 'p2', text: "Axborot manbasini ko'rsatish", category: 'ethical' },
+                        { id: 'p3', text: "Birovning rasmini ruxsatsiz nashr qilish", category: 'unethical' },
+                        { id: 'p4', text: "Izohlarda haqorat qilish", category: 'unethical' }
                     ]
                 },
                 {
                     id: 9,
                     type: 'matching',
-                    title: "Задание 9: Онлайн-общение",
-                    situation: `<h5>Ситуация:</h5><p>Во время онлайн-обучения учащиеся:</p><ul><li>общаются в чатах;</li><li>задают вопросы учителю;</li><li>работают в группах.</li></ul><p>Важно уметь адаптировать своё поведение в зависимости от ситуации общения.</p>`,
-                    description: "Соотнесите ситуацию с корректным действием.",
+                    title: "9-topshiriq: Onlayn muloqot",
+                    situation: `<h5>Vaziyat:</h5><p>Onlayn ta'lim vaqtida o'quvchilar:</p><ul><li>chatlarda muloqot qiladi;</li><li>o'qituvchiga savol beradi;</li><li>guruhlarda ishlaydi.</li></ul><p>Muloqot vaziyatiga qarab o'z xulq-atvorini moslashtira olish muhim.</p>`,
+                    description: "Vaziyatni to'g'ri harakat bilan moslashtiring.",
                     pairs: [
-                        { left: "Онлайн-урок идёт, учитель объясняет тему", right: "Не писать посторонние сообщения" },
-                        { left: "Работа в общем документе", right: "Вносить правки аккуратно и по договорённости" },
-                        { left: "Общение в учебном чате", right: "Соблюдать вежливый стиль общения" },
-                        { left: "Использование информации из интернета", right: "Указывать источник информации" }
+                        { left: "Onlayn dars ketmoqda, o'qituvchi mavzuni tushuntirayapti", right: "Ortiqcha xabarlar yozmaslik" },
+                        { left: "Umumiy hujjatdagi ish", right: "Tuzatishlarni ehtiyotkorlik va kelishuv asosida kiritish" },
+                        { left: "O'quv chatidagi muloqot", right: "Xushmuomala muloqot uslubiga rioya qilish" },
+                        { left: "Internetdagi ma'lumotlardan foydalanish", right: "Axborot manbasini ko'rsatish" }
                     ]
                 }
             ],

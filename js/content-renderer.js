@@ -51,11 +51,16 @@ function renderUserContent(user) {
         let btnClass = 'btn-primary';
         let isLocked = false;
 
+
+        // Define threshold logic for THIS level
+        let threshold = 60;
+        if (user.level === 'intermediate') threshold = 70;
+        if (user.level === 'advanced') threshold = 90;
+
         // SEQUENTIAL LOCKING LOGIC
         if (i > 1) {
             const prevScore = userProgress[i - 1] !== undefined ? userProgress[i - 1] : 0;
-            // If previous task score < 60, lock this one.
-            if (prevScore < 60) {
+            if (prevScore < threshold) {
                 isLocked = true;
                 btnText = lang === 'ru' ? 'Заблокировано' : 'Yopiq';
                 btnClass = 'btn-secondary disabled';
@@ -64,15 +69,18 @@ function renderUserContent(user) {
         }
 
         if (score !== undefined) {
-            // ... score logic ...
-            // (Copy existing logic but ensure we don't overwrite lock if we are locked? 
-            // Actually if I have a score, it implies I unlocked it before. 
-            // But if I re-set level, maybe I have score but prev task is now < 60? 
-            // Unlikely scenario. Assuming consistent state.)
             sumPercent += score;
 
             let grade = 2;
             let badgeColor = 'danger'; // Default red/fail
+
+            // Should grade definition change? 
+            // User: "Intermediate pass with 4 and above".
+            // If I get 65 (Grade 3), is it a fail? Yes.
+            // So visually it should perhaps look like a fail for Intermediate context?
+            // But let's keep standard gradients: 
+            // 91-100 (5), 71-90 (4), 60-70 (3), <60 (2).
+            // We just enforce the *threshold* for "Completed".
 
             if (score >= 91) {
                 grade = 5;
@@ -95,9 +103,18 @@ function renderUserContent(user) {
                 cardClass = 'bg-danger bg-opacity-10 text-white border-danger';
             }
 
+            // Visual override if score is below threshold but grade is >= 3 (e.g. Int & 60-69)
+            if (score < threshold) {
+                badgeColor = 'danger'; // Mark as red/bad even if technically 3
+                // Keep grade number correct? Or demote? 
+                // User says "Intermediate only with 4". So Grade 3 is effectively a "Not Good Enough".
+                // Let's keep the grade number but use red color/danger style.
+                cardClass = 'bg-danger bg-opacity-10 text-white border-danger';
+            }
+
             sumGrade += grade;
 
-            if (score >= 60) {
+            if (score >= threshold) {
                 completedCount++;
                 btnText = lang === 'ru' ? 'Повторить' : 'Qayta ishlash';
             } else {
@@ -129,19 +146,13 @@ function renderUserContent(user) {
     html += '</div>';
 
     // Statistics & Certificate
-    const allCompleted = completedCount >= levelData.tasks; // Assuming all passed >= 60
+    const allCompleted = completedCount >= levelData.tasks;
     const totalTasks = levelData.tasks;
     const avgPercent = totalTasks > 0 ? Math.round(sumPercent / totalTasks) : 0;
-
-    // Average Grade Calculation
-    // Logic: Sum of grades / Total Tasks. 
-    // If user hasn't done a task, I added 2 above. 
-    // Wait, let's verify if "untouched" should count as 2.
-    // Ideally "Certificate" is only available if ALL are done.
-    // So distinct logic: 
-    // Current Avg Display: average of *completed*? No, user said "all tasks".
-    // So I will stick to (Sum of all including defaults) / Total.
     const avgGrade = totalTasks > 0 ? (sumGrade / totalTasks).toFixed(1) : 0;
+
+    // Dynamic message for bottom
+    const threshold = user.level === 'advanced' ? 90 : (user.level === 'intermediate' ? 70 : 60);
 
     html += `
         <div class="row mt-5">
@@ -173,8 +184,8 @@ function renderUserContent(user) {
                                 <button class="btn btn-warning btn-lg fw-bold" onclick="generateCertificate(${avgPercent}, ${avgGrade})">${lang === 'ru' ? 'Получить сертификат' : 'Sertifikat olish'}</button>
                             </div>
                         ` : `
-                            <p class="text-white-50">${lang === 'ru' ? `Выполнено (на оценку 3+): ${completedCount} из ${totalTasks}` : `Bajarildi (3+ bahoga): ${totalTasks} dan ${completedCount}`}</p>
-                            ${completedCount < totalTasks ? `<p class="small text-muted">${lang === 'ru' ? 'Для получения сертификата нужно выполнить все задания минимум на 60%.' : 'Sertifikat olish uchun barcha topshiriqlarni kamida 60% ga bajarish kerak.'}</p>` : ''}
+                            <p class="text-white-50">${lang === 'ru' ? `Выполнено: ${completedCount} из ${totalTasks}` : `Bajarildi: ${totalTasks} dan ${completedCount}`}</p>
+                            ${completedCount < totalTasks ? `<p class="small text-muted">${lang === 'ru' ? `Для получения сертификата нужно выполнить все задания минимум на ${threshold}%.` : `Sertifikat olish uchun barcha topshiriqlarni kamida ${threshold}% ga bajarish kerak.`}</p>` : ''}
                         `}
                     </div>
                 </div>
@@ -196,11 +207,62 @@ window.openTask = function (index, level) {
     }
 }
 
+
 window.generateCertificate = function (percent, grade) {
-    const user = JSON.parse(localStorage.getItem('user'));
     const lang = localStorage.getItem('selectedLanguage') || 'ru';
-    const msg = lang === 'ru'
-        ? `Сертификат для ${user.name}\nСредний балл: ${percent}%\nСредняя оценка: ${grade}\n(Генерация PDF в разработке)`
-        : `Sertifikat ${user.name} uchun\nO'rtacha ball: ${percent}%\nO'rtacha baho: ${grade}\n(PDF generatsiya jarayonda)`;
-    alert(msg);
+    const title = lang === 'ru' ? 'Поздравляем!' : 'Tabriklaymiz!';
+    const msg = lang === 'ru' ?
+        'Вы успешно завершили уровень! Сертификат доступен в личном кабинете.' :
+        'Siz darajani muvaffaqiyatli yakunladingiz! Sertifikat shaxsiy kabinetda mavjud.';
+    const btnCabinet = lang === 'ru' ? 'В кабинет' : 'Kabinetga';
+    const btnStay = lang === 'ru' ? 'Остаться' : 'Qolish';
+
+    // Create Modal HTML
+    const modalId = 'certModalDashboard';
+    const existing = document.getElementById(modalId);
+    if (existing) existing.remove();
+
+    const html = `
+    <div class="modal fade" id="${modalId}" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" style="z-index: 10000;">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-dark" style="border: 2px solid #ffc107;">
+          <div class="modal-header bg-warning text-dark">
+            <h5 class="modal-title"><i class="fas fa-award"></i> ${title}</h5>
+            <button type="button" class="btn-close" onclick="document.getElementById('${modalId}').remove()" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center py-4">
+             <i class="fas fa-certificate fa-4x text-primary mb-3"></i>
+             <p class="lead">${msg}</p>
+             <p class="text-muted small">${lang === 'ru' ? `Ваш результат: ${percent}% (Оценка ${grade})` : `Natijangiz: ${percent}% (Baho ${grade})`}</p>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('${modalId}').remove()">${btnStay}</button>
+            <a href="cabinet.html" class="btn btn-primary">${btnCabinet}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-backdrop fade show" id="${modalId}-backdrop" style="z-index: 9999;"></div>`;
+
+    document.body.insertAdjacentHTML('beforeend', html);
+    const modalEl = document.getElementById(modalId);
+    const backdropEl = document.getElementById(`${modalId}-backdrop`);
+
+    // Try Bootstrap first
+    let bsSuccess = false;
+    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+        try {
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+            if (backdropEl) backdropEl.remove();
+            bsSuccess = true;
+        } catch (e) {
+            console.warn("Bootstrap Modal init failed", e);
+        }
+    }
+
+    if (!bsSuccess) {
+        modalEl.classList.add('show');
+        modalEl.style.display = 'block';
+    }
 }

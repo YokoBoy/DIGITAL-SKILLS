@@ -371,10 +371,15 @@
                 let completed = 0;
                 let sumScore = 0;
 
+                // Determine threshold
+                let threshold = 60;
+                if (levelName === 'intermediate') threshold = 70;
+                if (levelName === 'advanced') threshold = 90;
+
                 for (let i = 1; i <= counts[levelName]; i++) {
                     const s = scores[i] || 0;
                     sumScore += s;
-                    if (s >= 60) completed++;
+                    if (s >= threshold) completed++;
                 }
 
                 const total = counts[levelName];

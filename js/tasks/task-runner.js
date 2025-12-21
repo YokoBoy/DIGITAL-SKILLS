@@ -24,9 +24,21 @@ const TaskRunner = {
 
         // Fallback or if localization not found (though localization.js should be loaded)
         if (!sourceData || sourceData.length === 0) {
-            if (level === 'basic') sourceData = window.basicTasks;
-            else if (level === 'intermediate') sourceData = window.intermediateTasks;
-            else if (level === 'advanced') sourceData = window.advancedTasks;
+            if (level === 'basic') {
+                sourceData = window.basicTasks;
+            } else if (level === 'intermediate') {
+                if (window.intermediateTasksData && window.intermediateTasksData[lang]) {
+                    sourceData = window.intermediateTasksData[lang];
+                } else {
+                    sourceData = window.intermediateTasks;
+                }
+            } else if (level === 'advanced') {
+                if (window.advancedTasksData && window.advancedTasksData[lang]) {
+                    sourceData = window.advancedTasksData[lang];
+                } else {
+                    sourceData = window.advancedTasks;
+                }
+            }
         }
 
         if (!sourceData) {
@@ -80,10 +92,14 @@ const TaskRunner = {
             if (contentToRender.situation) situationText = contentToRender.situation;
 
             // Add stage Indicator
+            const lang = localStorage.getItem('selectedLanguage') || 'ru';
+            const questionText = lang === 'uz' ? 'Savol' : 'Вопрос';
+            const ofText = lang === 'uz' ? '/' : 'из';
+
             const progressHtml = `<div class="progress mb-3" style="height: 5px;">
                 <div class="progress-bar bg-success" role="progressbar" style="width: ${((this.currentStageIndex + 1) / task.stages.length) * 100}%"></div>
             </div>
-            <p class="text-muted small">Вопрос ${this.currentStageIndex + 1} из ${task.stages.length}</p>`;
+            <p class="text-muted small">${questionText} ${this.currentStageIndex + 1} ${ofText} ${task.stages.length}</p>`;
             container.innerHTML = progressHtml;
         }
 
@@ -95,9 +111,11 @@ const TaskRunner = {
             row.className = 'row h-100';
 
             // Left Column: Situation
+            const lang = localStorage.getItem('selectedLanguage') || 'ru';
+            const situationTitle = lang === 'uz' ? 'Vaziyat' : 'Ситуация';
             const colLeft = document.createElement('div');
             colLeft.className = 'col-md-5 border-end pe-4 d-none d-md-block';
-            colLeft.innerHTML = `<h5 class="text-primary"><i class="fas fa-info-circle"></i> Ситуация</h5>
+            colLeft.innerHTML = `<h5 class="text-primary"><i class="fas fa-info-circle"></i> ${situationTitle}</h5>
                                  <div class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">
                                     ${situationText}
                                  </div>`;
@@ -162,8 +180,10 @@ const TaskRunner = {
 
         if (newBtn.style.display === 'none') newBtn.style.display = 'block';
 
+        const lang = localStorage.getItem('selectedLanguage') || 'ru';
+
         if (type === 'info') {
-            newBtn.textContent = 'Далее / Next';
+            newBtn.textContent = lang === 'uz' ? 'Keyingi' : 'Далее';
             newBtn.className = 'btn btn-primary';
             newBtn.addEventListener('click', () => {
                 if (this.currentTask.stages && this.currentStageIndex < this.currentTask.stages.length - 1) {
@@ -179,10 +199,10 @@ const TaskRunner = {
             });
         } else {
             if (this.currentTask.stages && this.currentStageIndex < this.currentTask.stages.length - 1) {
-                newBtn.textContent = 'Далее / Next';
+                newBtn.textContent = lang === 'uz' ? 'Keyingi' : 'Далее';
                 newBtn.className = 'btn btn-primary';
             } else {
-                newBtn.textContent = 'Завершить / Finish';
+                newBtn.textContent = lang === 'uz' ? 'Tugatish' : 'Завершить';
                 newBtn.className = 'btn btn-success';
             }
             newBtn.addEventListener('click', () => {
@@ -751,18 +771,23 @@ const TaskRunner = {
         let gradeColor = 'danger';
         let msg = 'Try again!';
 
+        const threshold = this.getPassThreshold();
+        const passed = finalScore >= threshold;
+
         if (finalScore >= 91) {
             grade = 5;
             gradeColor = 'success';
+            msg = passed ? 'Отлично / A\'lo' : 'Отлично, но недостаточно для этого уровня'; // Edge case if 91 < threshold? Unlikely.
+            // Actually for Advanced threshold is 90. So 91 is pass.
             msg = 'Отлично / A\'lo';
         } else if (finalScore >= 71) {
             grade = 4;
-            gradeColor = 'primary';
-            msg = 'Хорошо / Yaxshi';
+            gradeColor = passed ? 'primary' : 'danger'; // Blue if pass, Red if fail (e.g. Adv requires 90)
+            msg = passed ? 'Хорошо / Yaxshi' : 'Недостаточно баллов / Ball yetarli emas';
         } else if (finalScore >= 60) {
             grade = 3;
-            gradeColor = 'warning';
-            msg = 'Удовлетворительно / Qoniqarli';
+            gradeColor = passed ? 'warning' : 'danger';
+            msg = passed ? 'Удовлетворительно / Qoniqarli' : 'Недостаточно баллов / Ball yetarli emas';
         } else {
             msg = 'Неудовлетворительно / Qoniqarsiz';
         }
@@ -770,9 +795,10 @@ const TaskRunner = {
         const resultDiv = document.createElement('div');
         resultDiv.className = `alert mt-3 text-center alert-${gradeColor}`;
         resultDiv.innerHTML = `
-            <h4>Result: ${finalScore}%</h4>
+            <h4>Result: ${finalScore}% ${passed ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-times-circle"></i>'}</h4>
             <h5 class="fw-bold">Оценка/Baho: ${grade}</h5>
             <p>${msg}</p>
+            ${!passed ? `<p class="small text-muted">Для прохождения уровня требуется ${threshold}%</p>` : ''}
         `;
 
         const modalBody = document.getElementById(this.config.containerId);
@@ -790,6 +816,19 @@ const TaskRunner = {
             const user = JSON.parse(localStorage.getItem('user'));
             renderUserContent(user);
         }
+
+        // Check for Level Completion
+        if (finalScore >= this.getPassThreshold()) {
+            this.checkLevelCompletion();
+        }
+    },
+
+    getPassThreshold: function () {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const level = this.currentLevel || user.level || 'basic';
+        if (level === 'advanced') return 90;
+        if (level === 'intermediate') return 70;
+        return 60;
     },
 
     saveProgress: function (taskId, score) {
@@ -815,6 +854,104 @@ const TaskRunner = {
                 db[idx] = user;
                 localStorage.setItem('db_users', JSON.stringify(db));
             }
+        }
+    },
+
+    checkLevelCompletion: function () {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const lang = localStorage.getItem('selectedLanguage') || 'ru';
+        const rawLevel = this.currentLevel || user.level || 'basic';
+        const levelKey = `${lang}_${rawLevel}`;
+
+        // Determine total tasks
+        let totalTasks = 0;
+        if (rawLevel === 'basic' && window.basicTasks) totalTasks = window.basicTasks.length;
+        else if (rawLevel === 'intermediate' && window.intermediateTasks) totalTasks = window.intermediateTasks.length;
+        else if (rawLevel === 'advanced' && window.advancedTasks) totalTasks = window.advancedTasks.length;
+
+        if (totalTasks === 0) return;
+
+        // Check user progress
+        const progress = user.progress[levelKey] || {};
+        let completedCount = 0;
+        const threshold = this.getPassThreshold(); // This uses currentLevel which should be set
+
+        // Safety: ensure currentLevel is correct for loop context? 
+        // Actually getPassThreshold relies on this.currentLevel. 
+        // When checking completion, we ARE in that level. So it is fine.
+
+        for (let i = 1; i <= totalTasks; i++) {
+            if ((progress[i] || 0) >= threshold) completedCount++;
+        }
+
+        if (completedCount === totalTasks) {
+            this.showCongratsModal();
+        }
+    },
+
+    showCongratsModal: function () {
+        const lang = localStorage.getItem('selectedLanguage') || 'ru';
+        const title = lang === 'ru' ? 'Поздравляем!' : 'Tabriklaymiz!';
+        const msg = lang === 'ru' ?
+            'Вы успешно завершили уровень! Сертификат доступен в личном кабинете.' :
+            'Siz darajani muvaffaqiyatli yakunladingiz! Sertifikat shaxsiy kabinetda mavjud.';
+        const btnCabinet = lang === 'ru' ? 'В кабинет' : 'Kabinetga';
+        const btnStay = lang === 'ru' ? 'Остаться' : 'Qolish';
+
+        // Create Modal HTML
+        const modalId = 'congratsModal';
+        // Remove if exists
+        const existing = document.getElementById(modalId);
+        if (existing) existing.remove();
+
+        const html = `
+        <div class="modal fade" id="${modalId}" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" style="z-index: 10000;">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-dark" style="border: 2px solid #28a745;">
+              <div class="modal-header bg-success text-white">
+                <h5 class="modal-title"><i class="fas fa-trophy"></i> ${title}</h5>
+                <button type="button" class="btn-close btn-close-white" onclick="document.getElementById('${modalId}').remove()" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-center py-4">
+                 <i class="fas fa-certificate fa-4x text-warning mb-3"></i>
+                 <p class="lead">${msg}</p>
+              </div>
+              <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('${modalId}').remove()">${btnStay}</button>
+                <a href="cabinet.html" class="btn btn-primary">${btnCabinet}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-backdrop fade show" id="${modalId}-backdrop" style="z-index: 9999;"></div>`;
+
+        document.body.insertAdjacentHTML('beforeend', html);
+        const modalEl = document.getElementById(modalId);
+        const backdropEl = document.getElementById(`${modalId}-backdrop`);
+
+        // Try Bootstrap first
+        let bsSuccess = false;
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            try {
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+                // If bootstrap works, it adds its own backdrop, so remove ours
+                if (backdropEl) backdropEl.remove();
+                bsSuccess = true;
+            } catch (e) {
+                console.warn("Bootstrap Modal init failed", e);
+            }
+        }
+
+        if (!bsSuccess) {
+            // Vanilla Fallback
+            modalEl.classList.add('show');
+            modalEl.style.display = 'block';
+            // We keep our backdrop
+        } else {
+            // If success, we removed our backdrop.
+            // But verify z-index issues. Bootstrap modals usually have 1050.
+            // Ours has 10000. It should be fine.
         }
     }
 };
