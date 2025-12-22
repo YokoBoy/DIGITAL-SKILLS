@@ -206,6 +206,28 @@ div:not(.alert):not(.card-body):not(.badge):not(.btn) {
     color: inherit;
 }
 
+/* Task.html Page Override - Force Dark Text on White Background */
+.task-wrapper,
+.task-wrapper *:not(.task-header):not(.task-header *):not(.btn):not(.badge) {
+    color: #333 !important;
+}
+
+.task-body,
+.task-body h1,
+.task-body h2,
+.task-body h3,
+.task-body h4,
+.task-body h5,
+.task-body h6,
+.task-body p,
+.task-body div,
+.task-body span,
+.task-body label,
+.task-body .card,
+.task-body .form-check-label {
+    color: #333 !important;
+}
+
 /* Cabinet Page Specific Overrides */
 .cabinet-section h2,
 .cabinet-section h3,
