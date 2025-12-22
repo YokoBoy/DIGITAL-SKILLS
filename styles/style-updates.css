@@ -234,6 +234,18 @@ div:not(.alert):not(.card-body):not(.badge):not(.btn) {
     color: #657aee !important;
 }
 
+/* Resources Page Titles - White */
+h3.text-primary span,
+h3.text-success span {
+    color: #ffffff !important;
+}
+
+/* Tasks Page Statistics Text - White */
+.works h4,
+.works h5 {
+    color: #ffffff !important;
+}
+
 /* Progress bar level text - White */
 .card-body .d-flex span,
 .progress+small,
