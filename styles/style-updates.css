@@ -206,6 +206,41 @@ div:not(.alert):not(.card-body):not(.badge):not(.btn) {
     color: inherit;
 }
 
+/* Cabinet Page Specific Overrides */
+.cabinet-section h2,
+.cabinet-section h3,
+.cabinet-section h4,
+.cabinet-section p,
+.profile-card h2,
+.profile-card h3,
+.profile-card p,
+.stats-card h3,
+.stats-card h4,
+.stats-card p {
+    color: #ffffff !important;
+}
+
+/* Main Page Hero and Section Titles - Force White */
+.slider__title,
+.section-title,
+.cap__title,
+.card-header h5,
+.card-header {
+    color: #ffffff !important;
+}
+
+/* Hero Subtitle - Bright Blue/Orange accent */
+.slider__descr {
+    color: #657aee !important;
+}
+
+/* Progress bar level text - White */
+.card-body .d-flex span,
+.progress+small,
+.progress-bar+small {
+    color: #ffffff !important;
+}
+
 /* Ensure Works/Protected content area is transparent or dark */
 .works,
 .protected-content {
