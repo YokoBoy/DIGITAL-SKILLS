@@ -553,15 +553,19 @@ const TaskRunner = {
         const questions = items.questions || [];
         let html = '<div class="quiz-container">';
         questions.forEach((q, index) => {
+            // Randomize options but keep track of original index for correctness
+            const optionsWithIdx = q.options.map((opt, i) => ({ text: opt, idx: i }));
+            optionsWithIdx.sort(() => Math.random() - 0.5);
+
             html += `
             <div class="card mb-3 shadow-sm" id="q-container-${index}">
                 <div class="card-body">
                     <p class="fw-bold mb-2">${index + 1}. ${q.text}</p>
                     <div class="options-list">
-                        ${q.options.map((opt, i) => `
+                        ${optionsWithIdx.map((optObj, i) => `
                             <div class="form-check p-2 rounded hover-item">
-                                <input class="form-check-input" type="${q.multi ? 'checkbox' : 'radio'}" name="q${index}" id="q${index}_${i}" value="${i}">
-                                <label class="form-check-label w-100" style="cursor:pointer" for="q${index}_${i}">${opt}</label>
+                                <input class="form-check-input" type="${q.multi ? 'checkbox' : 'radio'}" name="q${index}" id="q${index}_${i}" value="${optObj.idx}">
+                                <label class="form-check-label w-100" style="cursor:pointer" for="q${index}_${i}">${optObj.text}</label>
                             </div>
                         `).join('')}
                     </div>
@@ -576,9 +580,11 @@ const TaskRunner = {
     renderDragDrop: function (itemData, container) {
         let html = '<div class="row">';
 
-        // Items pool
+        // Items pool - Randomized
+        const shuffledItems = [...itemData.items].sort(() => Math.random() - 0.5);
+
         html += '<div class="col-12 mb-3"><div class="d-flex flex-wrap gap-2 p-3 border rounded bg-light" id="dd-pool">';
-        itemData.items.forEach((item, i) => {
+        shuffledItems.forEach((item, i) => {
             html += `<div class="btn btn-outline-dark dd-item" draggable="true" data-id="${item.id}" id="item-${i}">${item.text}</div>`;
         });
         html += '</div></div>';

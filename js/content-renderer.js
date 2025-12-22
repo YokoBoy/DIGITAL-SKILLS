@@ -118,21 +118,22 @@ function renderUserContent(user) {
                 grade = 5;
                 badgeColor = 'success';
                 cardClass = 'bg-success bg-opacity-25 text-white border-success';
-                btnClass = 'btn-outline-light';
+                btnClass = 'btn-outline-success';
             } else if (score >= 71) {
                 grade = 4;
                 badgeColor = 'primary'; // Blue
                 cardClass = 'bg-primary bg-opacity-25 text-white border-primary';
-                btnClass = 'btn-outline-light';
+                btnClass = 'btn-outline-primary';
             } else if (score >= 60) {
                 grade = 3;
                 badgeColor = 'warning'; // Yellow/Orange
                 cardClass = 'bg-warning bg-opacity-10 text-white border-warning';
-                btnClass = 'btn-outline-light';
+                btnClass = 'btn-outline-warning';
             } else {
                 // Fail
                 badgeColor = 'danger';
                 cardClass = 'bg-danger bg-opacity-10 text-white border-danger';
+                btnClass = 'btn-outline-danger';
             }
 
             // Visual override if score is below threshold but grade is >= 3 (e.g. Int & 60-69)

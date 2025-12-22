@@ -144,12 +144,25 @@
 
 /* Modal specific overrides */
 .modal-content {
-    background: #fff;
-    /* Ensure white bg for tasks as standard UI */
-    color: #000;
+    background: #fff !important;
+    color: #000 !important;
 }
 
-/* Unless dark mode preferred? Let's stick to standard bootstrap modal for clarity of tasks */
+.modal-header,
+.modal-body,
+.modal-footer {
+    color: #000 !important;
+}
+
+.modal-title,
+.modal-content h1,
+.modal-content h2,
+.modal-content h3,
+.modal-content h4,
+.modal-content h5,
+.modal-content h6 {
+    color: #000 !important;
+}
 
 .modal-header {
     border-bottom: 1px solid #dee2e6;
@@ -161,5 +174,83 @@
 
 .btn-close {
     filter: none;
-    /* Reset invert if we want standard black on white */
+}
+
+/* ----------------------------------------------------------------- */
+/* Force Dark Theme Global Background - USER REQUESTED OVERRIDE */
+/* ----------------------------------------------------------------- */
+
+body {
+    background-color: #151537 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+/* Force Header/Navigation to match dark theme */
+.header,
+.navigate {
+    background-color: #151537 !important;
+    background-image: none !important;
+    background: #151537 !important;
+}
+
+/* Reset heading and text colors to white/light for the global dark theme */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div:not(.alert):not(.card-body):not(.badge):not(.btn) {
+    color: inherit;
+}
+
+/* Ensure Works/Protected content area is transparent or dark */
+.works,
+.protected-content {
+    background: transparent !important;
+}
+
+/* Cards on Dark Theme */
+.card:not(.feature-card) {
+    /* Background for standard bootstrap cards (like in modals or tasks) */
+    /* If we want tasks to remain Light (Black on White), keep them white. */
+    /* But if we want Dashboard Cards to be dark... */
+    /* The Dashboard Cards use .feature-card, handled above. */
+    /* The Task Runner uses standard cards. Let's make Task Runner Dark too for consistency? */
+    /* User shared image of Dashboard. Dashboard is Dark. */
+
+    /* Let's affect the Dashboard Cards specifically via utility overrides */
+}
+
+/* Ensure Feature Cards on Dashboard look good on #151537 */
+.feature-card {
+    background-color: #1f1f40 !important;
+    /* Slightly lighter than body */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.feature-card.bg-success {
+    background-color: rgba(25, 135, 84, 0.2) !important;
+}
+
+.feature-card.bg-primary {
+    background-color: rgba(13, 110, 253, 0.2) !important;
+}
+
+.feature-card.bg-warning {
+    background-color: rgba(255, 193, 7, 0.1) !important;
+}
+
+.feature-card.bg-danger {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+}
+
+/* Utility Class Overrides for Text Visibility on Dark */
+.text-dark {
+    /* We used text-dark to fix light efficiency. Now we need white. */
+    /* But if I globally invert text-dark, it breaks modals if they remain white. */
+    /* Better to revert the JS change instead of CSS hack here if possible. */
+    /* But for "invisible elements", changing them to white here is valid for the BODY context. */
 }
