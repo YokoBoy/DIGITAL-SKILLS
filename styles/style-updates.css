@@ -323,3 +323,166 @@ h3.text-success span {
     /* Better to revert the JS change instead of CSS hack here if possible. */
     /* But for "invisible elements", changing them to white here is valid for the BODY context. */
 }
+
+/* ========================================
+   ANIMATED STATISTICS SECTION
+   ======================================== */
+
+.stats-section {
+    background: linear-gradient(135deg, #5b67d4 0%, #7177F1 50%, #8a8ff5 100%);
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+    margin: 80px 0;
+}
+
+.stats-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.3;
+    z-index: 0;
+}
+
+.stats-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+.stats-title {
+    text-align: center;
+    color: #ffffff;
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.stats-total {
+    background: linear-gradient(90deg, #ff8c42 0%, #ff6b35 100%);
+    border-radius: 50px;
+    padding: 20px 50px;
+    display: inline-block;
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 auto 50px;
+    display: block;
+    width: fit-content;
+    box-shadow: 0 8px 16px rgba(255, 107, 53, 0.4);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    letter-spacing: 2px;
+}
+
+.stats-subtitle {
+    background: linear-gradient(90deg, #7cb799 0%, #6ba587 100%);
+    border-radius: 30px;
+    padding: 12px 40px;
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 auto 60px;
+    display: block;
+    width: fit-content;
+    box-shadow: 0 4px 8px rgba(107, 165, 135, 0.4);
+}
+
+.stats-levels {
+    margin-top: 40px;
+}
+
+.level-badge {
+    background: linear-gradient(135deg, #7cb799 0%, #6ba587 100%);
+    border-radius: 50px;
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(107, 165, 135, 0.4);
+    letter-spacing: 1px;
+}
+
+.level-box {
+    background: linear-gradient(135deg, #ff8538 0%, #ff6b35 100%);
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.level-box:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(255, 107, 53, 0.6);
+}
+
+.level-box .counter {
+    font-size: 72px;
+    font-weight: 900;
+    color: #ffffff;
+    display: block;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Animation Classes */
+.animate-text {
+    opacity: 0;
+    transform: scale(0.3);
+    transition: all 2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-text.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Stagger delay for sequential animation */
+.stats-title.visible {
+    transition-delay: 0s;
+}
+
+.stats-total.visible {
+    transition-delay: 0.3s;
+}
+
+.stats-subtitle.visible {
+    transition-delay: 0.6s;
+}
+
+.level-badge.visible {
+    transition-delay: 0.9s;
+}
+
+.level-badge:nth-child(1).visible {
+    transition-delay: 0.9s;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stats-title {
+        font-size: 32px;
+    }
+
+    .stats-total {
+        font-size: 24px;
+        padding: 15px 30px;
+    }
+
+    .level-box .counter {
+        font-size: 56px;
+    }
+
+    .stats-subtitle {
+        font-size: 20px;
+    }
+}

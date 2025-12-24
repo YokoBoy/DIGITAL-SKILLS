@@ -179,6 +179,42 @@
       </div>
     </div>
 
+    <!-- STATISTICS SECTION -->
+    <div class="stats-section" id="stats">
+      <div class="container">
+        <h2 class="stats-title animate-text" data-i18n="stats-title">СТАТИСТИКА УЧАСТНИКОВ</h2>
+
+        <div class="stats-total animate-text">
+          <span data-i18n="stats-total-label">ВСЕГО:</span>
+          <span class="counter" data-target="246">0</span>
+          <span data-i18n="stats-total-people">ЧЕЛОВЕКА</span>
+        </div>
+
+        <div class="stats-subtitle animate-text" data-i18n="stats-by-levels">По уровням:</div>
+
+        <div class="row stats-levels justify-content-center">
+          <div class="col-md-4 mb-4">
+            <div class="level-badge animate-text" data-i18n="level-basic">ЛЕГКИЙ</div>
+            <div class="level-box">
+              <span class="counter" data-target="51">0</span>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="level-badge animate-text">СРЕДНИЙ</div>
+            <div class="level-box">
+              <span class="counter" data-target="164">0</span>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="level-badge animate-text" data-i18n="level-advanced">ПРОДВИНУТЫЙ</div>
+            <div class="level-box">
+              <span class="counter" data-target="31">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Protected Content Section REMOVED - Moved to dashboard.html -->
 
   </main>
@@ -266,6 +302,74 @@
   <script src="js/auth.js"></script>
   <script>
     // No auto-redirect. User chooses to go to dashboard.
+  </script>
+
+  <!-- Statistics Animation Script -->
+  <script>
+    (function () {
+      // Text Scale Animation on Scroll
+      const animateElements = document.querySelectorAll('.animate-text');
+      const counters = document.querySelectorAll('.counter');
+      let hasAnimated = false;
+
+      const observerOptions = {
+        threshold: 0.3,
+        rootMargin: '0px'
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasAnimated) {
+            hasAnimated = true;
+
+            // Step 1: Trigger text scale animations (2 seconds)
+            animateElements.forEach(el => {
+              el.classList.add('visible');
+            });
+
+            // Step 2: After text animation completes, start counter animations (after 2 sec delay)
+            setTimeout(() => {
+              counters.forEach(counter => {
+                animateCounter(counter);
+              });
+            }, 2000);
+          }
+        });
+      }, observerOptions);
+
+      // Observe the statistics section
+      const statsSection = document.querySelector('.stats-section');
+      if (statsSection) {
+        observer.observe(statsSection);
+      }
+
+      // Counter Animation Function (5+ seconds duration)
+      function animateCounter(element) {
+        const target = parseInt(element.getAttribute('data-target'));
+        const duration = 5000; // 5 seconds
+        const startTime = performance.now();
+        const startValue = 0;
+
+        function updateCounter(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+
+          // Easing function for smooth animation (easeOutQuart)
+          const easeProgress = 1 - Math.pow(1 - progress, 4);
+
+          const currentValue = Math.floor(startValue + (target - startValue) * easeProgress);
+          element.textContent = currentValue;
+
+          if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+          } else {
+            element.textContent = target; // Ensure final value is exact
+          }
+        }
+
+        requestAnimationFrame(updateCounter);
+      }
+    })();
   </script>
 </body>
 

@@ -55,6 +55,10 @@ const translations = {
         "cert-course": "Цифровые Технологии",
         "cert-date": "Дата выдачи",
         "cert-signature": "Подпись инструктора",
+        "stats-title": "СТАТИСТИКА УЧАСТНИКОВ",
+        "stats-total-label": "ВСЕГО:",
+        "stats-total-people": "ЧЕЛОВЕКА",
+        "stats-by-levels": "По уровням:",
         "tasks": {
             basic: [
                 {
@@ -409,6 +413,10 @@ const translations = {
         "cert-course": "Raqamli Texnologiyalar",
         "cert-date": "Berilgan sana",
         "cert-signature": "Instruktor imzosi",
+        "stats-title": "ISHTIROKCHILAR STATISTIKASI",
+        "stats-total-label": "JAMI:",
+        "stats-total-people": "KISHI",
+        "stats-by-levels": "Darajalar bo'yicha:",
         "videos": [
             { title: "1-video dars", url: "https://drive.google.com/file/d/1f94FL0uo4q9ZRim8GwCFQrczL6QIdfU7/preview" },
             { title: "2-video dars", url: "https://drive.google.com/file/d/1HpwzUfmPjQkDpC2U7gxF24nnZ_XWEn1H/preview" },
