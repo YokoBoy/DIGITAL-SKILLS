@@ -1,5 +1,6 @@
 const translations = {
     ru: {
+        "change-level": "Сменить уровень",
         "nav-login": "Войти",
         "nav-logout": "Выйти",
         "nav-home": "Главная",
@@ -214,6 +215,7 @@ const translations = {
         ]
     },
     uz: {
+        "change-level": "Darajani o'zgartirish",
         "nav-login": "Kirish",
         "nav-logout": "Chiqish",
         "nav-home": "Bosh sahifa",
