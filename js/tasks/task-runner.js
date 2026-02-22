@@ -178,7 +178,34 @@ const TaskRunner = {
             if (container) container.appendChild(newBtn);
         }
 
+        // Clean up previous file inputs
+        const oldInput = document.getElementById('task-file-upload');
+        if (oldInput) oldInput.remove();
+
         if (newBtn.style.display === 'none') newBtn.style.display = 'block';
+        newBtn.disabled = false; // Enable by default
+
+        // File Upload Logic
+        if (contentToRender.requiresFileUpload) {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.id = 'task-file-upload';
+            fileInput.className = 'form-control d-inline-block w-auto me-2 align-middle';
+            fileInput.style.maxWidth = '250px';
+
+            // Insert before the button
+            newBtn.parentNode.insertBefore(fileInput, newBtn);
+
+            // Disable button until file selected
+            newBtn.disabled = true;
+            fileInput.addEventListener('change', function () {
+                if (this.files && this.files.length > 0) {
+                    newBtn.disabled = false;
+                } else {
+                    newBtn.disabled = true;
+                }
+            });
+        }
 
         const lang = localStorage.getItem('selectedLanguage') || 'ru';
 
@@ -193,7 +220,7 @@ const TaskRunner = {
                         document.getElementById(this.config.checkBtnId)
                     );
                 } else {
-                    this.currentResults.push(100); // Info always 100? Or just ignore in avg? Let's say 100 for reading.
+                    this.currentResults.push(100);
                     this.finishInfoTask();
                 }
             });

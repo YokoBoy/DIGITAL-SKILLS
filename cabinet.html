@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="bootstap/bootstrap.css">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/style-updates.css">
+    <script src="js/theme.js"></script>
 </head>
 
 <body>
@@ -32,6 +33,11 @@
                                 <a class="header__link lang-btn active" href="#" data-lang="ru">RU</a>
                                 <span class="header__divider">|</span>
                                 <a class="header__link lang-btn" href="#" data-lang="uz">UZ</a>
+                            </li>
+                            <li>
+                                <a class="header__link" href="#" id="theme-toggle" title="Сменить тему">
+                                    <i class="fas fa-moon" id="theme-icon"></i>
+                                </a>
                             </li>
                             <li><a class="header__link active" href="index.html" data-i18n="nav-home">Главная</a></li>
                             <li><a class="header__link" href="resources.html" data-i18n="nav-resources">Ресурсы</a></li>
@@ -138,6 +144,54 @@
                                 <p data-i18n="text-no-certificates">У вас пока нет сертификатов.</p>
                                 <small data-i18n="text-cert-hint">Завершите уровень, чтобы получить сертификат.</small>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teacher Statistics Panel (only visible for teacher) -->
+            <div id="teacher-stats-panel" class="row mt-4" style="display: none;">
+                <div class="col-12">
+                    <div class="card bg-dark text-white border-secondary">
+                        <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+                            <h5 class="m-0"><i class="fas fa-chalkboard-teacher me-2"></i>Статистика учеников</h5>
+                            <div class="d-flex gap-2 align-items-center">
+                                <input type="text" id="student-search"
+                                    class="form-control form-control-sm bg-secondary text-white border-0"
+                                    placeholder="🔍 Поиск по имени или email..." style="width: 260px;">
+                                <select id="student-filter"
+                                    class="form-select form-select-sm bg-secondary text-white border-0"
+                                    style="width: 180px;">
+                                    <option value="all">Все уровни</option>
+                                    <option value="complete">Всё пройдено</option>
+                                    <option value="in-progress">В процессе</option>
+                                    <option value="low">Низкий прогресс</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <!-- Summary Cards -->
+                            <div class="d-flex flex-wrap gap-3 p-3" id="teacher-summary-cards">
+                            </div>
+                            <!-- Table -->
+                            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                                <table class="table table-dark table-hover table-striped mb-0" id="students-table">
+                                    <thead class="table-dark" style="position: sticky; top: 0; z-index: 1;">
+                                        <tr>
+                                            <th style="width: 40px;">#</th>
+                                            <th>Имя</th>
+                                            <th>Email</th>
+                                            <th class="text-center" style="width: 130px;">Базовый</th>
+                                            <th class="text-center" style="width: 130px;">Средний</th>
+                                            <th class="text-center" style="width: 130px;">Продвинутый</th>
+                                            <th class="text-center" style="width: 100px;">Общий</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="students-tbody">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="p-3 text-muted text-center" id="students-count"></div>
                         </div>
                     </div>
                 </div>
@@ -302,6 +356,7 @@
 
     <script src="bootstap/bootstrap.js"></script>
     <script src="js/localization.js"></script>
+    <script src="js/teacher-data.js"></script>
     <script src="js/auth.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -321,6 +376,20 @@
 
                 document.getElementById('profile-name').textContent = user.name;
                 document.getElementById('profile-email').textContent = user.email;
+            }
+
+            // Hide student-only sections for teacher
+            if (user.role === 'teacher') {
+                document.getElementById('profile-name').textContent = 'Администратор';
+                // Hide progress section
+                const progressCard = document.querySelector('.col-md-8 .card:nth-of-type(1)');
+                if (progressCard) progressCard.style.display = 'none';
+                // Hide certificates section
+                const certCard = document.querySelector('.col-md-8 .card:nth-of-type(2)');
+                if (certCard) certCard.style.display = 'none';
+                // Hide level badge and tasks button in profile card
+                const profileTextStart = document.querySelector('.col-md-4 .text-start');
+                if (profileTextStart) profileTextStart.style.display = 'none';
             }
 
             // Dynamic Level Translation
@@ -477,6 +546,99 @@
             }
 
             // Expose download function globally
+            // === TEACHER STATISTICS PANEL ===
+            if (user.role === 'teacher' && window.teacherStudentData) {
+                const panel = document.getElementById('teacher-stats-panel');
+                if (panel) {
+                    panel.style.display = 'flex';
+                    const students = window.teacherStudentData;
+                    const tbody = document.getElementById('students-tbody');
+                    const searchInput = document.getElementById('student-search');
+                    const filterSelect = document.getElementById('student-filter');
+                    const countDiv = document.getElementById('students-count');
+                    const summaryDiv = document.getElementById('teacher-summary-cards');
+
+                    // Summary stats
+                    const totalStudents = students.length;
+                    const avgBasic = Math.round(students.reduce((s, st) => s + st.basic, 0) / totalStudents);
+                    const avgInter = Math.round(students.reduce((s, st) => s + st.intermediate, 0) / totalStudents);
+                    const avgAdv = Math.round(students.reduce((s, st) => s + st.advanced, 0) / totalStudents);
+                    const allComplete = students.filter(s => s.basic === 100 && s.intermediate === 100 && s.advanced === 100).length;
+
+                    summaryDiv.innerHTML = `
+                        <div class="flex-fill p-3 rounded text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-width: 140px;">
+                            <div style="font-size: 2rem; font-weight: bold;">${totalStudents}</div>
+                            <small>Всего учеников</small>
+                        </div>
+                        <div class="flex-fill p-3 rounded text-center" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%); min-width: 140px;">
+                            <div style="font-size: 2rem; font-weight: bold;">${avgBasic}%</div>
+                            <small>Ср. базовый</small>
+                        </div>
+                        <div class="flex-fill p-3 rounded text-center" style="background: linear-gradient(135deg, #198754 0%, #146c43 100%); min-width: 140px;">
+                            <div style="font-size: 2rem; font-weight: bold;">${avgInter}%</div>
+                            <small>Ср. средний</small>
+                        </div>
+                        <div class="flex-fill p-3 rounded text-center" style="background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%); color: #000; min-width: 140px;">
+                            <div style="font-size: 2rem; font-weight: bold;">${avgAdv}%</div>
+                            <small>Ср. продвинутый</small>
+                        </div>
+                        <div class="flex-fill p-3 rounded text-center" style="background: linear-gradient(135deg, #20c997 0%, #0ca678 100%); min-width: 140px;">
+                            <div style="font-size: 2rem; font-weight: bold;">${allComplete}</div>
+                            <small>Всё пройдено</small>
+                        </div>
+                    `;
+
+                    function getProgressBadge(val) {
+                        const v = parseInt(val) || 0;
+                        let cls = 'bg-danger';
+                        if (v === 100) cls = 'bg-success';
+                        else if (v >= 50) cls = 'bg-warning text-dark';
+                        else if (v >= 25) cls = 'bg-info text-dark';
+                        return `<span class="badge ${cls}" style="min-width: 50px; font-size: 0.85rem;">${v}%</span>`;
+                    }
+
+                    function renderTable(filtered) {
+                        let html = '';
+                        filtered.forEach((s, i) => {
+                            const avg = Math.round((s.basic + s.intermediate + s.advanced) / 3);
+                            let avgCls = 'bg-danger';
+                            if (avg === 100) avgCls = 'bg-success';
+                            else if (avg >= 70) avgCls = 'bg-primary';
+                            else if (avg >= 40) avgCls = 'bg-warning text-dark';
+                            html += `<tr>
+                                <td class="text-muted">${i + 1}</td>
+                                <td style="font-size: 0.85rem;">${s.name}</td>
+                                <td><small class="text-info">${s.email}</small></td>
+                                <td class="text-center">${getProgressBadge(s.basic)}</td>
+                                <td class="text-center">${getProgressBadge(s.intermediate)}</td>
+                                <td class="text-center">${getProgressBadge(s.advanced)}</td>
+                                <td class="text-center"><span class="badge ${avgCls}" style="min-width: 50px; font-size: 0.85rem;">${avg}%</span></td>
+                            </tr>`;
+                        });
+                        tbody.innerHTML = html || '<tr><td colspan="7" class="text-center text-muted py-4">Ничего не найдено</td></tr>';
+                        countDiv.textContent = `Показано: ${filtered.length} из ${totalStudents} учеников`;
+                    }
+
+                    function applyFilters() {
+                        const q = searchInput.value.toLowerCase().trim();
+                        const f = filterSelect.value;
+                        let filtered = students.filter(s => {
+                            const matchSearch = !q || s.name.toLowerCase().includes(q) || s.email.toLowerCase().includes(q);
+                            let matchFilter = true;
+                            if (f === 'complete') matchFilter = s.basic === 100 && s.intermediate === 100 && s.advanced === 100;
+                            else if (f === 'in-progress') matchFilter = (s.basic > 0 || s.intermediate > 0 || s.advanced > 0) && !(s.basic === 100 && s.intermediate === 100 && s.advanced === 100);
+                            else if (f === 'low') matchFilter = (s.basic + s.intermediate + s.advanced) / 3 < 50;
+                            return matchSearch && matchFilter;
+                        });
+                        renderTable(filtered);
+                    }
+
+                    searchInput.addEventListener('input', applyFilters);
+                    filterSelect.addEventListener('change', applyFilters);
+                    renderTable(students);
+                }
+            }
+
             window.downloadCertificate = function (levelKey, levelTitle) {
                 const tr = translations[lang] || translations['ru'];
 

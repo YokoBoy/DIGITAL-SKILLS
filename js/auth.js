@@ -113,6 +113,32 @@ function login(email, password) {
         return true;
     }
 
+    // 2. Teacher Account
+    if (email === 'teacher777@gmail.com' && password === 'teacherRasulova') {
+        const teacherUser = {
+            name: 'Администратор',
+            email: 'teacher777@gmail.com',
+            password: 'teacherRasulova',
+            level: 'advanced',
+            role: 'teacher',
+            progress: {}
+        };
+
+        localStorage.setItem('user', JSON.stringify(teacherUser));
+
+        let users = JSON.parse(localStorage.getItem('db_users') || '[]');
+        const existingIdx = users.findIndex(u => u.email === teacherUser.email);
+        if (existingIdx >= 0) {
+            users[existingIdx] = teacherUser;
+        } else {
+            users.push(teacherUser);
+        }
+        localStorage.setItem('db_users', JSON.stringify(users));
+
+        window.location.href = 'cabinet.html';
+        return true;
+    }
+
     const users = JSON.parse(localStorage.getItem('db_users') || '[]');
     const user = users.find(u => u.email === email && u.password === password);
 
